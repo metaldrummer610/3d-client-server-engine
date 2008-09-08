@@ -12,13 +12,14 @@ private:
 	std::map<int, AbstractModel*> modelList;
 	//std::map<int, ENetPeer*> peerList;
 	ModelFactory factory;
+	int peerNumber;
 
 public:
 	void init();
 	void deinit();
 	void mainLoop();
 	void sendModels(ENetPeer *p);
-	//void addModelToList(ENetPeer *p);
+	void addModelToList(ENetPeer *p);
 	AbstractModel* createModel();
 	void handlePacket(ENetPacket* p);
 	void sendUpdatedModel(AbstractModel* m);

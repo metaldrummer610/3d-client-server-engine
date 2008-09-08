@@ -38,6 +38,8 @@ void Server::init() {
 	}
 
 	atexit(enet_deinitialize);
+
+	peerNumber = 0;
 }
 
 void Server::deinit() {
@@ -45,63 +47,47 @@ void Server::deinit() {
 	delete &modelList;
 }
 
-AbstractModel* Server::createModel() {
+void Server::addModelToList(ENetPeer* p) {
 	AbstractModel* a = factory.getModelByName("pyramid");
 	a->setX(-9.0f);
 	a->setY(5.2f);
 	a->setZ(-23.3245f);
-	a->setId(modelList.size());
-	return a;
+	a->setId((int&) p->data);
+	modelList.insert(pair<int, AbstractModel*> (a->getId(), a));
 }
 
 void Server::sendModels(ENetPeer *p) {
-	/*	map<int, ENetPeer*>::iterator piter;
-	 map<int, AbstractModel*>::iterator it;
-	 string name;
+	map<int, AbstractModel*>::iterator it;
+	string name;
 
-	 for (piter = peerList.begin(); piter != peerList.end(); piter++) {
-	 for (it = modelList.begin(); it != modelList.end(); it++) {
-	 string s = (*it).second->serialize();
+	for (it = modelList.begin(); it != modelList.end(); it++) {
+		string s = (*it).second->serialize();
 
-	 stringstream ss(stringstream::in | stringstream::out);
-
-	 ss << "newModel," << s;
-
-	 ENetPacket* packet = enet_packet_create(ss.str().c_str(), strlen(
-	 ss.str().c_str()) + 1, ENET_PACKET_FLAG_RELIABLE);
-	 enet_peer_send((*piter).second, 0, packet);
-	 }
-	 }
-
-	 if (p != NULL) {
-	 stringstream ss(stringstream::in | stringstream::out);
-	 ss << "player," << modelList.size() - 1 << "," << modelList.find(
-	 modelList.size() - 1)->second->getName() << ",";
-
-	 ENetPacket* packet = enet_packet_create(ss.str().c_str(), strlen(
-	 ss.str().c_str()) + 1, ENET_PACKET_FLAG_RELIABLE);
-	 enet_peer_send(p, 0, packet);
-	 }
-	 */
-	ENetPeer* peers[] = server->peers;
-	cout << "peer data " << server->peerCount << endl;
-
-	for (int i = 0; i < peers->length; i++) {
-		cout << "inside loop" << endl;
-		AbstractModel* a = (AbstractModel*) peers[i].data;
-
-		string s = a->serialize();
-
-		cout << "created" << endl;
 		stringstream ss(stringstream::in | stringstream::out);
 
 		ss << "newModel," << s;
 
+		cout << "new model string: " << ss.str() << endl;
+
 		ENetPacket* packet = enet_packet_create(ss.str().c_str(), strlen(
 				ss.str().c_str()) + 1, ENET_PACKET_FLAG_RELIABLE);
-		enet_peer_send(&peers[i], 0, packet);
+
+		enet_host_broadcast(server, 0, packet);
 	}
 
+	if (p != NULL) {
+		int i = (int&) p->data;
+		AbstractModel* a = modelList[i];
+		stringstream ss(stringstream::in | stringstream::out);
+
+		ss << "player," << a->getId() << "," << a->getName() << ",";
+
+		cout << "player string: " << ss.str() << endl;
+
+		ENetPacket* packet = enet_packet_create(ss.str().c_str(), strlen(
+				ss.str().c_str()) + 1, ENET_PACKET_FLAG_RELIABLE);
+		enet_peer_send(p, 0, packet);
+	}
 }
 
 void Server::handlePacket(ENetPacket* p) {
@@ -177,18 +163,6 @@ void Server::sendUpdatedModel(AbstractModel* m) {
 			ss.str().c_str()) + 1, ENET_PACKET_FLAG_RELIABLE);
 
 	enet_host_broadcast(server, 0, packet);
-
-	/*map<int, ENetPeer*>::iterator piter;
-
-	 for (piter = peerList.begin(); piter != peerList.end(); piter++) {
-	 stringstream ss(stringstream::in | stringstream::out);
-
-	 ss << "updatedModel," << m->serialize();
-
-	 ENetPacket* packet = enet_packet_create(ss.str().c_str(), strlen(
-	 ss.str().c_str()) + 1, ENET_PACKET_FLAG_RELIABLE);
-	 enet_peer_send((*piter).second, 0, packet);
-	 }*/
 }
 
 void Server::mainLoop() {
@@ -206,38 +180,30 @@ void Server::mainLoop() {
 				//peerList.insert(pair<int, ENetPeer*> (peerList.size() + 1,
 				//event.peer));
 
-				event.peer->data = createModel();
+				event.peer->data = (int*) peerNumber;
+				addModelToList(event.peer);
 				sendModels(event.peer);
 
+				peerNumber++;
+				cout << "peer number: " << peerNumber << endl;
 				break;
 
 			case ENET_EVENT_TYPE_RECEIVE:
-				printf(
-						"A packet of length %u containing %s was received from %s on channel %u.\n",
-						event.packet -> dataLength, event.packet -> data,
-						event.peer -> data, event.channelID);
+				cout << "A packet of length " << event.packet->dataLength
+						<< " containing " << event.packet->data
+						<< " was received from " << event.peer->data
+						<< " on channel " << event.channelID << "." << endl;
 				/* Clean up the packet now that we're done using it. */
 				handlePacket(event.packet);
 				enet_packet_destroy(event.packet);
 				break;
 
 			case ENET_EVENT_TYPE_DISCONNECT:
+				cout << event.peer -> data << " disconnected" << endl;
+				modelList.erase((int&) event.peer->data);
+
 				/* Reset the peer's client information. */
 				event.peer -> data = NULL;
-
-				/*map<int, ENetPeer*>::iterator it;
-				 map<int, AbstractModel*>::iterator it2;
-
-				 for (it = peerList.begin(); it != peerList.end(); it++) {
-				 if ((*it).second == event.peer) {
-				 it2 = modelList.find((*it).first);
-				 modelList.erase(it2);
-				 peerList.erase(it);
-				 cout << "client and model erased" << endl;
-				 }
-				 }*/
-
-				cout << "client disconnected" << endl;
 			}
 		}
 	}
