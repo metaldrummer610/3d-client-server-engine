@@ -5,8 +5,7 @@
 using namespace std;
 
 #include "client.h"
-//#include "../model/cube.h"
-#include "../model/abstractModel.h"
+#include "../model/modelFactory.h"
 
 int main(int argv, char** argc) {
 	Client c = Client();
