@@ -1,14 +1,26 @@
-CLIENT= client.o model.o
-SERVER= server.o model.o
+CLIENT_OBJS = objs/client.o
+SERVER_OBJS = objs/server.o
 
-client: $(CLIENT)
-	g++ $(CLIENT) -o bin/client.out -lenet
+CLIENT_OUT = -o bin/client
+SERVER_OUT = -o bin/server
 
-server: $(SERVER)
-	g++ $(SERVER) -o bin/server.out
+ARGS = -lenet -lGL -lGLU `sdl-config --cflags --libs`
 
-client.o: src/client/*.cpp
+CLIENT_FILES = src/client/client.cpp
+SERVER_FILES = src/server/server.cpp
+MODEL_FILES = src/model/modelFactory.cpp src/model/pyramid.cpp src/model/cube.cpp
 
-server.o: src/server/*.cpp
+client: $(CLIENT_OBJS)
+	g++ $(CLIENT_OBJS) $(MODEL_FILES) $(CLIENT_OUT) $(ARGS)
 
-model.o: src/model/*.cpp
+server: 
+	g++ $(SERVER_FILES) $(MODEL_FILES) $(SERVER_OUT) $(ARGS)
+
+clean:
+	@rm bin/client
+	@rm bin/server
+	@rm objs/*
+	@echo removed binaries and object files
+
+objs/client.o: $(CLIENT_FILES)
+	g++ -o objs/client.o $(CLIENT_FILES) $(ARGS)

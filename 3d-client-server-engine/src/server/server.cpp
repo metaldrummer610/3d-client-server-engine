@@ -180,7 +180,7 @@ void Server::mainLoop() {
 				//peerList.insert(pair<int, ENetPeer*> (peerList.size() + 1,
 				//event.peer));
 
-				event.peer->data = (int*) peerNumber;
+				event.peer->data = (void*) peerNumber;
 				addModelToList(event.peer);
 				sendModels(event.peer);
 
