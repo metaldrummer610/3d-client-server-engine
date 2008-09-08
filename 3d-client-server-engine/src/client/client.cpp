@@ -129,7 +129,6 @@ void Client::sdl_openglInit(int width, int height) {
 
 void Client::deinit() {
 	enet_host_destroy(client);
-	delete &modelList;
 }
 
 void Client::render() {
@@ -140,10 +139,16 @@ void Client::render() {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	vector<AbstractModel*>::iterator it;
+	/*vector<AbstractModel*>::iterator it;
+
+	 for (it = modelList.begin(); it != modelList.end(); it++) {
+	 (*it)->draw();
+	 }*/
+
+	map<int, AbstractModel*>::iterator it;
 
 	for (it = modelList.begin(); it != modelList.end(); it++) {
-		(*it)->draw();
+		(*it).second->draw();
 	}
 
 	glFlush();
@@ -183,7 +188,8 @@ void Client::handlePacket(ENetPacket *p) {
 
 		AbstractModel* a = factory.getModel(tmp);
 
-		modelList.push_back((AbstractModel*) a);
+		//modelList.push_back((AbstractModel*) a);
+		modelList.insert(pair<int, AbstractModel*> (a->getId(), a));
 
 		return;
 	}
@@ -196,7 +202,8 @@ void Client::handlePacket(ENetPacket *p) {
 
 		AbstractModel* c = factory.getModel(str);
 
-		modelList.at(c->getId()) = c;
+		//modelList.at(c->getId()) = c;
+		modelList[c->getId()] = c;
 
 		return;
 	}
@@ -231,6 +238,8 @@ void Client::handlePacket(ENetPacket *p) {
 					in >> name;
 					nameDone = true;
 				}
+
+				temp = "";
 			}
 		}
 
@@ -287,6 +296,7 @@ void Client::handleKeyPress(SDL_keysym *keysym) {
 	switch (keysym->sym) {
 	case SDLK_ESCAPE:
 		/* ESC key was pressed */
+		deinit();
 		exit(EXIT_FAILURE);
 		break;
 		// taken out because the full screen doesn't work
@@ -324,17 +334,17 @@ void Client::processSdlEvents() {
 
 	while (SDL_PollEvent(&sdlEvent)) {
 		switch (sdlEvent.type) {
-		case SDL_ACTIVEEVENT:
-			/* Something's happend with our focus
-			 * If we lost focus or we are iconified, we
-			 * shouldn't draw the screen
-			 */
-			if (sdlEvent.active.gain == 0) {
-				isActive = false;
-			} else {
-				isActive = true;
-			}
-			break;
+		/*case SDL_ACTIVEEVENT:
+		 Something's happend with our focus
+		 * If we lost focus or we are iconified, we
+		 * shouldn't draw the screen
+
+		 if (sdlEvent.active.gain == 0) {
+		 isActive = false;
+		 } else {
+		 isActive = true;
+		 }
+		 break;*/
 		case SDL_KEYDOWN:
 			/* handle key presses */
 			handleKeyPress(&sdlEvent.key.keysym);
@@ -347,8 +357,8 @@ void Client::processSdlEvents() {
 	}
 
 	/* draw the scene */
-	if (isActive)
-		render();
+	//if (isActive)
+	render();
 
 }
 
