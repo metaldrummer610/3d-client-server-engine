@@ -1,0 +1,7 @@
+build client:
+
+g++ src/client/*.cpp src/model/*.cpp -o bin/client -lenet `sdl-config --cflags --libs` -lGL -lGLU
+
+build server:
+
+g++ src/server/*.cpp src/model/*.cpp -o bin/server -lenet `sdl-config --cflags --libs` -lGL -lGLU
