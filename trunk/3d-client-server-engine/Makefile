@@ -10,8 +10,8 @@ CLIENT_FILES = src/client/client.cpp
 SERVER_FILES = src/server/server.cpp
 MODEL_FILES = src/model/modelFactory.cpp src/model/pyramid.cpp src/model/cube.cpp
 
-client: $(CLIENT_OBJS)
-	g++ $(CLIENT_OBJS) $(MODEL_FILES) $(CLIENT_OUT) $(ARGS)
+client: 
+	g++ $(CLIENT_FILES) $(MODEL_FILES) $(CLIENT_OUT) $(ARGS)
 
 server: 
 	g++ $(SERVER_FILES) $(MODEL_FILES) $(SERVER_OUT) $(ARGS)
@@ -23,4 +23,4 @@ clean:
 	@echo removed binaries and object files
 
 objs/client.o: $(CLIENT_FILES)
-	g++ -o objs/client.o $(CLIENT_FILES) $(ARGS)
+	g++ -o objs/client.o $(CLIENT_FILES) $(MODEL_FILES) $(ARGS)
