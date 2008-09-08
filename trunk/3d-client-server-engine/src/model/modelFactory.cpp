@@ -1,5 +1,4 @@
 #include <sstream>
-using namespace std;
 
 #include "modelFactory.h"
 
@@ -7,13 +6,13 @@ Cube* ModelFactory::cube = new Cube();
 Pyramid* ModelFactory::pyramid = new Pyramid();
 
 
-AbstractModel* ModelFactory::getModel(string s) {
+AbstractModel* ModelFactory::getModel(std::string s) {
 
-	string::iterator it;
-	string temp;
+	std::string::iterator it;
+	std::string temp;
 	temp = "";
 
-	string name;
+	std::string name;
 	int id;
 	float x;
 	float y;
@@ -32,7 +31,7 @@ AbstractModel* ModelFactory::getModel(string s) {
 			temp.append(&c);
 		} else {
 			//cout << "temp is: " << temp << endl;
-			istringstream in(temp);
+			std::istringstream in(temp);
 
 			if (nameDone == false) {
 				in >> name;
@@ -76,7 +75,7 @@ AbstractModel* ModelFactory::getModel(string s) {
 	}
 }
 
-AbstractModel* ModelFactory::getModelByName(string name) {
+AbstractModel* ModelFactory::getModelByName(std::string name) {
 	if (name.compare("cube") == 0) {
 		return cube;
 	} else if (name.compare("pyramid") == 0) {

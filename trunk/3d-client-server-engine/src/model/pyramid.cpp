@@ -1,8 +1,8 @@
 #include "pyramid.h"
 #include <iostream>
 #include <sstream>
+#include <string>
 #include <SDL/SDL_opengl.h>
-using namespace std;
 
 static float angle = 0.0f;
 
@@ -65,17 +65,17 @@ void Pyramid::draw() {
 	glEnd();
 }
 
-string Pyramid::serialize() {
-	stringstream ss(stringstream::in | stringstream::out);
+std::string Pyramid::serialize() {
+	std::stringstream ss(std::stringstream::in | std::stringstream::out);
 
 	ss << "pyramid" << "," << id << "," << x << "," << y << "," << z << ",";
 
 	return ss.str();
 }
 
-void Pyramid::deserialize(string& s) {
-	string::iterator it;
-	string temp;
+void Pyramid::deserialize(std::string& s) {
+	std::string::iterator it;
+	std::string temp;
 	temp = "";
 
 	bool idDone = false;
@@ -90,7 +90,7 @@ void Pyramid::deserialize(string& s) {
 			temp.append(&c);
 		} else {
 			//cout << "temp is: " << temp << endl;
-			istringstream in(temp);
+			std::istringstream in(temp);
 
 			if (idDone == false) {
 				in >> id;

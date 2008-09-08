@@ -2,13 +2,12 @@
 #define _PYRAMID_H
 #include <string>
 #include "abstractModel.h"
-using namespace std;
 
 class Pyramid: public AbstractModel {
 public:
 	Pyramid();
 	void draw();
-	string serialize();
-	void deserialize(string& s);
+	std::string serialize();
+	void deserialize(std::string& s);
 };
 #endif
