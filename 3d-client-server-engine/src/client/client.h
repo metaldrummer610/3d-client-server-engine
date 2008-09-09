@@ -5,8 +5,8 @@
 #include <map>
 #include <SDL/SDL.h>
 #include <SDL/SDL_opengl.h>
-#include "../model/abstractModel.h"
 #include "../model/modelFactory.h"
+#include "../util/textFactory.h"
 
 #define SCREEN_WIDTH  800
 #define SCREEN_HEIGHT 600
@@ -14,10 +14,10 @@
 class Client {
 private:
 	ENetHost* client;
-	//std::vector<AbstractModel*> modelList;
 	std::map<int, AbstractModel*> modelList;
 	AbstractModel* player;
-	ModelFactory factory;
+	ModelFactory modelFactory;
+	TextFactory textFactory;
 	SDL_Surface *screen;
 	ENetPeer* peer;
 	ENetAddress address;
