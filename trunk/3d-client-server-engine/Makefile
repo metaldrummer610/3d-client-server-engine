@@ -9,14 +9,15 @@ ARGS = -lenet -lGL -lGLU `sdl-config --cflags --libs`
 CLIENT_FILES = src/client/client.cpp
 SERVER_FILES = src/server/server.cpp
 MODEL_FILES = src/model/modelFactory.cpp src/model/pyramid.cpp src/model/cube.cpp
+UTIL_FILES = src/util/textFactory.cpp
 
 all: client server
 
 client: 
-	g++ $(CLIENT_FILES) $(MODEL_FILES) $(CLIENT_OUT) $(ARGS)
+	g++ $(CLIENT_FILES) $(MODEL_FILES) $(UTIL_FILES) $(CLIENT_OUT) $(ARGS)
 
 server: 
-	g++ $(SERVER_FILES) $(MODEL_FILES) $(SERVER_OUT) $(ARGS)
+	g++ $(SERVER_FILES) $(MODEL_FILES) $(UTIL_FILES) $(SERVER_OUT) $(ARGS)
 
 clean:
 	@rm bin/client

@@ -99,6 +99,10 @@ void Client::sdl_openglInit(int width, int height) {
 
 	SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
 
+	/////////////////////////////
+	// opengl setup
+	/////////////////////////////
+
 	float ratio = (float) width / (float) height;
 
 	/* Our shading model--Gouraud (smooth). */
@@ -124,10 +128,17 @@ void Client::sdl_openglInit(int width, int height) {
 
 	gluPerspective(60.0, ratio, 1.0, 1024.0);
 	resizeWindow(width, height);
+
+	//////////////////////////
+	// create the font to be used in game
+	//////////////////////////
+
+	textFactory.buildFont();
 }
 
 void Client::deinit() {
 	enet_host_destroy(client);
+	textFactory.killFont();
 }
 
 void Client::render() {
@@ -138,11 +149,14 @@ void Client::render() {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	/*vector<AbstractModel*>::iterator it;
+	glTranslatef(0.0f, 0.0f, -1.0f);
 
-	 for (it = modelList.begin(); it != modelList.end(); it++) {
-	 (*it)->draw();
-	 }*/
+	glColor3f(0.0f, 1.0f, 0.0f);
+
+	glRasterPos2f(0.0f, 0.0f);
+	textFactory.glPrint("This is a test %i", SCREEN_HEIGHT);
+
+	glLoadIdentity();
 
 	map<int, AbstractModel*>::iterator it;
 
@@ -185,7 +199,7 @@ void Client::handlePacket(ENetPacket *p) {
 		i += 9;
 		string tmp = s.substr(i);
 
-		AbstractModel* a = factory.getModel(tmp);
+		AbstractModel* a = modelFactory.getModel(tmp);
 
 		//modelList.push_back((AbstractModel*) a);
 		modelList.insert(pair<int, AbstractModel*> (a->getId(), a));
@@ -199,7 +213,7 @@ void Client::handlePacket(ENetPacket *p) {
 		i += 13;
 		string str = s.substr(i);
 
-		AbstractModel* c = factory.getModel(str);
+		AbstractModel* c = modelFactory.getModel(str);
 
 		//modelList.at(c->getId()) = c;
 		modelList[c->getId()] = c;
@@ -242,7 +256,7 @@ void Client::handlePacket(ENetPacket *p) {
 			}
 		}
 
-		AbstractModel* c = factory.getModelByName(name);
+		AbstractModel* c = modelFactory.getModelByName(name);
 		c = modelList[spot];
 		player = c;
 
