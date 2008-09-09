@@ -7,9 +7,6 @@
 #include "pyramid.h"
 
 class ModelFactory {
-private:
-	static Cube* cube;
-	static Pyramid* pyramid;
 public:
 	AbstractModel* getModel(std::string s);
 	AbstractModel* getModelByName(std::string name);

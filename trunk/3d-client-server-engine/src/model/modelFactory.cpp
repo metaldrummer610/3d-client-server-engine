@@ -2,10 +2,6 @@
 
 #include "modelFactory.h"
 
-Cube* ModelFactory::cube = new Cube();
-Pyramid* ModelFactory::pyramid = new Pyramid();
-
-
 AbstractModel* ModelFactory::getModel(std::string s) {
 
 	std::string::iterator it;
@@ -77,8 +73,8 @@ AbstractModel* ModelFactory::getModel(std::string s) {
 
 AbstractModel* ModelFactory::getModelByName(std::string name) {
 	if (name.compare("cube") == 0) {
-		return cube;
+		return new Cube();
 	} else if (name.compare("pyramid") == 0) {
-		return pyramid;
+		return new Pyramid();
 	}
 }
