@@ -1,7 +1,6 @@
 #include <enet/enet.h>
 #include <iostream>
 #include <sstream>
-//#include <algorithm>
 using namespace std;
 
 #include "client.h"
@@ -18,6 +17,18 @@ int main(int argv, char** argc) {
 }
 
 void Client::init() {
+	/////////////////////
+	// load up config file and set properties
+	/////////////////////
+
+	properties = fileLoader.loadConfigFile();
+
+	std::istringstream width(properties.find("SCREEN_WIDTH")->second);
+	width >> SCREEN_WIDTH;
+
+	std::istringstream height(properties.find("SCREEN_HEIGHT")->second);
+	height >> SCREEN_HEIGHT;
+
 	////////////////////
 	// this is the enet init
 	////////////////////
@@ -33,7 +44,7 @@ void Client::init() {
 		exit(EXIT_FAILURE);
 	}
 
-	enet_address_set_host(&address, "localhost");
+	enet_address_set_host(&address, properties.find("SERVER_ADDRESS")->second.c_str());
 	address.port = 4445;
 
 	peer = enet_host_connect(client, &address, 2);
