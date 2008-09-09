@@ -9,7 +9,7 @@ ARGS = -lenet -lGL -lGLU `sdl-config --cflags --libs`
 CLIENT_FILES = src/client/client.cpp
 SERVER_FILES = src/server/server.cpp
 MODEL_FILES = src/model/modelFactory.cpp src/model/pyramid.cpp src/model/cube.cpp
-UTIL_FILES = src/util/textFactory.cpp
+UTIL_FILES = src/util/textFactory.cpp src/util/fileLoader.cpp
 
 all: client server
 

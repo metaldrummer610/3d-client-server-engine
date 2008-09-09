@@ -6,13 +6,16 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_opengl.h>
 #include "../model/modelFactory.h"
+#include "../util/fileLoader.h"
 #include "../util/textFactory.h"
 
-#define SCREEN_WIDTH  800
-#define SCREEN_HEIGHT 600
+//#define SCREEN_WIDTH  800
+//#define SCREEN_HEIGHT 600
 
 class Client {
 private:
+	int SCREEN_WIDTH;
+	int SCREEN_HEIGHT;
 	ENetHost* client;
 	std::map<int, AbstractModel*> modelList;
 	AbstractModel* player;
@@ -25,6 +28,10 @@ private:
 	bool isActive;
 	int videoFlags;
 	int bpp;
+
+	FileLoader fileLoader;
+	std::map<std::string, std::string> properties;
+
 public:
 	void init();
 	void deinit();
