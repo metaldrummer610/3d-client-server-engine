@@ -67,9 +67,6 @@ void Server::sendModels(ENetPeer *p) {
 
 		ss << "newModel," << s;
 
-		cout << "new model string: " << ss.str() << endl;
-		cout << "new model int: " << (*it).first << endl;
-
 		ENetPacket* packet = enet_packet_create(ss.str().c_str(), strlen(
 				ss.str().c_str()) + 1, ENET_PACKET_FLAG_RELIABLE);
 
@@ -82,8 +79,6 @@ void Server::sendModels(ENetPeer *p) {
 		stringstream ss(stringstream::in | stringstream::out);
 
 		ss << "player," << a->getId() << "," << a->getName() << ",";
-
-		cout << "player string: " << ss.str() << endl;
 
 		ENetPacket* packet = enet_packet_create(ss.str().c_str(), strlen(
 				ss.str().c_str()) + 1, ENET_PACKET_FLAG_RELIABLE);
@@ -186,7 +181,6 @@ void Server::mainLoop() {
 				sendModels(event.peer);
 
 				peerNumber++;
-				cout << "peer number: " << peerNumber << endl;
 				break;
 
 			case ENET_EVENT_TYPE_RECEIVE:
