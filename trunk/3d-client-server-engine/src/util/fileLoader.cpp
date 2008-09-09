@@ -1,7 +1,6 @@
 #include "fileLoader.h"
 #include <fstream>
 #include <iostream>
-using namespace std;
 
 std::map<std::string, std::string> FileLoader::loadConfigFile() {
 	std::map<std::string, std::string> properties;
@@ -10,7 +9,7 @@ std::map<std::string, std::string> FileLoader::loadConfigFile() {
 
 	std::string line;
 
-	configFile.open("resources/config.config");
+	configFile.open("resources/config.conf");
 
 	if (configFile.is_open()) {
 		while (!configFile.eof()) {

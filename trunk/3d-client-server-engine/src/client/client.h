@@ -9,9 +9,6 @@
 #include "../util/fileLoader.h"
 #include "../util/textFactory.h"
 
-//#define SCREEN_WIDTH  800
-//#define SCREEN_HEIGHT 600
-
 class Client {
 private:
 	int SCREEN_WIDTH;

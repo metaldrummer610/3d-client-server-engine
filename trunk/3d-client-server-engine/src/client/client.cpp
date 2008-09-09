@@ -212,7 +212,6 @@ void Client::handlePacket(ENetPacket *p) {
 
 		AbstractModel* a = modelFactory.getModel(tmp);
 
-		//modelList.push_back((AbstractModel*) a);
 		modelList.insert(pair<int, AbstractModel*> (a->getId(), a));
 
 		return;
@@ -226,7 +225,6 @@ void Client::handlePacket(ENetPacket *p) {
 
 		AbstractModel* c = modelFactory.getModel(str);
 
-		//modelList.at(c->getId()) = c;
 		modelList[c->getId()] = c;
 
 		return;

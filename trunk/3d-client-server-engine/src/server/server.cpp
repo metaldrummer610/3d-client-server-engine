@@ -173,8 +173,6 @@ void Server::mainLoop() {
 			case ENET_EVENT_TYPE_CONNECT:
 				/* Store any relevant client information here. */
 				cout << "client connected" << endl;
-				//peerList.insert(pair<int, ENetPeer*> (peerList.size() + 1,
-				//event.peer));
 
 				event.peer->data = (void*) peerNumber;
 				addModelToList(event.peer);

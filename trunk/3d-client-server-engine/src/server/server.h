@@ -9,7 +9,6 @@ private:
 	ENetHost* server;
 	ENetAddress address;
 	std::map<int, AbstractModel*> modelList;
-	//std::map<int, ENetPeer*> peerList;
 	ModelFactory factory;
 	int peerNumber;
 
