@@ -17,7 +17,7 @@ int main(int argv, char** argc) {
 }
 
 void Client::init() {
-	fpsStr = " ";
+	fpsStr = "FPS: ";
 	renderFPS = false;
 
 	/////////////////////
@@ -186,8 +186,7 @@ void Client::render() {
 			std::stringstream str(std::stringstream::in
 					| std::stringstream::out);
 
-			str << Frames << " frames in " << seconds << " seconds = " << fps
-					<< " FPS";
+			str << "FPS: " << Frames << " frames in " << seconds << " seconds = " << fps;
 			fpsStr = str.str();
 			T0 = t;
 			Frames = 0;

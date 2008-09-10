@@ -45,7 +45,7 @@ void FontRenderer::glPrint(int x, int y, const char *fmt, ...) {
 
 	color.r = 255;
 	color.g = 255;
-	color.b = 255;
+	color.b = 0;
 
 	position.x = x;
 	position.y = y;
@@ -71,8 +71,21 @@ void FontRenderer::drawText(char *text, TTF_Font *font, SDL_Color color,
 	w = nextpoweroftwo(initial->w);
 	h = nextpoweroftwo(initial->h);
 
-	intermediary = SDL_CreateRGBSurface(0, w, h, 32, 0x00ff0000, 0x0000ff00,
-			0x000000ff, 0xff000000);
+	intermediary = SDL_CreateRGBSurface(0, w, h, 32,
+#if SDL_BYTEORDER == SDL_LIL_ENDIAN // OpenGL RGBA masks
+                               0x000000FF,
+                               0x0000FF00,
+                               0x00FF0000,
+                               0xFF000000
+#else
+                               0xFF000000,
+                               0x00FF0000,
+                               0x0000FF00,
+                               0x000000FF
+#endif
+                               );
+			//0x00ff0000, 0x0000ff00,
+			//0x000000ff, 0xff000000);
 
 	SDL_BlitSurface(initial, 0, intermediary, 0);
 
