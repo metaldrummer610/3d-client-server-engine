@@ -4,10 +4,11 @@
 #include <vector>
 #include <map>
 #include <SDL/SDL.h>
+#include <SDL/SDL_ttf.h>
 #include <SDL/SDL_opengl.h>
 #include "../model/modelFactory.h"
 #include "../util/fileLoader.h"
-#include "../util/textFactory.h"
+#include "../util/fontRenderer.h"
 
 class Client {
 private:
@@ -17,7 +18,7 @@ private:
 	std::map<int, AbstractModel*> modelList;
 	AbstractModel* player;
 	ModelFactory modelFactory;
-	TextFactory textFactory;
+	FontRenderer fontFactory;
 	SDL_Surface *screen;
 	ENetPeer* peer;
 	ENetAddress address;
@@ -25,6 +26,13 @@ private:
 	bool isActive;
 	int videoFlags;
 	int bpp;
+
+	string fpsStr;
+	GLint T0;
+	GLint Frames;
+	GLfloat seconds;
+	GLfloat fps;
+	bool renderFPS;
 
 	FileLoader fileLoader;
 	std::map<std::string, std::string> properties;

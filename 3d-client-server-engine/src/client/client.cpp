@@ -17,6 +17,9 @@ int main(int argv, char** argc) {
 }
 
 void Client::init() {
+	fpsStr = " ";
+	renderFPS = false;
+
 	/////////////////////
 	// load up config file and set properties
 	/////////////////////
@@ -44,7 +47,8 @@ void Client::init() {
 		exit(EXIT_FAILURE);
 	}
 
-	enet_address_set_host(&address, properties.find("SERVER_ADDRESS")->second.c_str());
+	enet_address_set_host(&address,
+			properties.find("SERVER_ADDRESS")->second.c_str());
 	address.port = 4445;
 
 	peer = enet_host_connect(client, &address, 2);
@@ -118,6 +122,10 @@ void Client::sdl_openglInit(int width, int height) {
 
 	/* Our shading model--Gouraud (smooth). */
 	glShadeModel(GL_SMOOTH);
+	glDepthFunc(GL_LEQUAL);
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+	glBlendFunc(GL_ONE, GL_ONE);
+	glEnable(GL_BLEND);
 
 	/* Culling. */
 	glCullFace(GL_BACK);
@@ -139,17 +147,10 @@ void Client::sdl_openglInit(int width, int height) {
 
 	gluPerspective(60.0, ratio, 1.0, 1024.0);
 	resizeWindow(width, height);
-
-	//////////////////////////
-	// create the font to be used in game
-	//////////////////////////
-
-	textFactory.buildFont();
 }
 
 void Client::deinit() {
 	enet_host_destroy(client);
-	textFactory.killFont();
 }
 
 void Client::render() {
@@ -160,12 +161,8 @@ void Client::render() {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	glTranslatef(0.0f, 0.0f, -1.0f);
-
-	glColor3f(0.0f, 1.0f, 0.0f);
-
-	glRasterPos2f(0.0f, 0.0f);
-	textFactory.glPrint("This is a test %i", SCREEN_HEIGHT);
+	if (renderFPS)
+		fontFactory.glPrint(0, SCREEN_HEIGHT - 35, fpsStr.c_str());
 
 	glLoadIdentity();
 
@@ -179,18 +176,19 @@ void Client::render() {
 
 	SDL_GL_SwapBuffers();
 
-	/* These are to calculate our fps */
-	static GLint T0 = 0;
-	static GLint Frames = 0;
-
 	/* Gather our frames per second */
 	Frames++;
 	{
 		GLint t = SDL_GetTicks();
 		if (t - T0 >= 5000) {
-			GLfloat seconds = (t - T0) / 1000.0;
-			GLfloat fps = Frames / seconds;
-			printf("%d frames in %g seconds = %g FPS\n", Frames, seconds, fps);
+			seconds = (t - T0) / 1000.0;
+			fps = Frames / seconds;
+			std::stringstream str(std::stringstream::in
+					| std::stringstream::out);
+
+			str << Frames << " frames in " << seconds << " seconds = " << fps
+					<< " FPS";
+			fpsStr = str.str();
 			T0 = t;
 			Frames = 0;
 		}
@@ -247,10 +245,10 @@ void Client::handlePacket(ENetPacket *p) {
 		for (it = str.begin(); it != str.end(); it++) {
 			if (*it != ',') {
 				char c = *it;
-				cout << "c is: " << *it << ":" << endl;
+				//cout << "c is: " << *it << ":" << endl;
 				temp.append(&c);
 			} else {
-				cout << "temp is: " << temp << endl;
+				//cout << "temp is: " << temp << endl;
 				istringstream in(temp);
 
 				if (spotDone == false) {
@@ -328,6 +326,12 @@ void Client::handleKeyPress(SDL_keysym *keysym) {
 		 */
 		//	SDL_WM_ToggleFullScreen(screen);
 		//	break;
+	case SDLK_f:
+		if (!renderFPS)
+			renderFPS = true;
+		else
+			renderFPS = false;
+		break;
 	case SDLK_w:
 		sendPacket("move,y,0.125");
 		player->setY(player->getY() + 0.125f);
@@ -404,7 +408,7 @@ void Client::mainLoop() {
 
 			case ENET_EVENT_TYPE_RECEIVE:
 				handlePacket(event.packet);
-				cout << "event data " << event.packet->data << endl;
+				//cout << "event data " << event.packet->data << endl;
 
 				/* Clean up the packet now that we're done using it. */
 				enet_packet_destroy(event.packet);
