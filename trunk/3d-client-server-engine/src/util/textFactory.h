@@ -1,6 +1,6 @@
 #ifndef _TEXT_FACTORY_H
 #define _TEXT_FACTORY_H
-#include <GL/gl.h>
+#include <SDL/sdl_opengl.h>
 
 class TextFactory {
 private:
