@@ -1,13 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
-#include <GL/gl.h>
-#include <GL/glx.h>
 #include <string.h>
 
 #include "textFactory.h"
 
 void TextFactory::buildFont() {
+#ifdef (__GNUC__)
 	Display *dpy; /* Our current X display */
 	XFontStruct *fontInfo; /* Our font info */
 
@@ -39,6 +38,13 @@ void TextFactory::buildFont() {
 
 	/* close the display now that we're done with it */
 	XCloseDisplay(dpy);
+#endif
+#ifdef(__WIN32__)
+	std::cout << "no text for you windows!" << std::endl;
+#endif
+#ifdef(__APPLE__)
+	std::cout << "no text for you mac!" << std::endl;
+#endif
 }
 
 void TextFactory::glPrint(const char *fmt, ...) {
