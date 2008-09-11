@@ -1,0 +1,27 @@
+#summary Requirements to build the project
+#labels Phase-Deploy
+= Libraries Required =
+
+  * enet
+
+  * OpenGL
+
+  * SDL
+
+  * SDL_ttf
+
+
+= How To Build =
+
+On the command line run:
+
+{{{
+make client // for the client
+make server // for the server
+}}}
+
+or
+
+{{{
+make all // for both of them
+}}}
