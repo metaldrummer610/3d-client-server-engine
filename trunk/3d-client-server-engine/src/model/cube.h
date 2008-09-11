@@ -4,6 +4,8 @@
 #include "abstractModel.h"
 
 class Cube: public AbstractModel {
+private:
+	float angle;
 public:
 	Cube();
 	void draw();

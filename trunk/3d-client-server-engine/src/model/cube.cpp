@@ -4,13 +4,12 @@
 #include <string>
 #include <SDL/SDL_opengl.h>
 
-static float angle = 0.0f;
-
 Cube::Cube() {
 	x = 0.0f;
 	y = 0.0f;
 	z = 0.0f;
 	name = "cube";
+	angle = 0.0f;
 }
 
 void Cube::draw() {

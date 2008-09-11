@@ -161,6 +161,17 @@ void Server::sendUpdatedModel(AbstractModel* m) {
 	enet_host_broadcast(server, 0, packet);
 }
 
+void Server::sendRemoveModel(AbstractModel* m) {
+	stringstream ss(stringstream::in | stringstream::out);
+
+	ss << "removeModel," << m->getId();
+
+	ENetPacket* packet = enet_packet_create(ss.str().c_str(), strlen(
+			ss.str().c_str()) + 1, ENET_PACKET_FLAG_RELIABLE);
+
+	enet_host_broadcast(server, 0, packet);
+}
+
 void Server::mainLoop() {
 	cout << "Hello World" << endl;
 
@@ -193,6 +204,7 @@ void Server::mainLoop() {
 
 			case ENET_EVENT_TYPE_DISCONNECT:
 				cout << event.peer -> data << " disconnected" << endl;
+				sendRemoveModel(modelList[(int&) event.peer->data]);
 				modelList.erase((int&) event.peer->data);
 
 				/* Reset the peer's client information. */

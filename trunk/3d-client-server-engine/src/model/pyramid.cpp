@@ -4,13 +4,12 @@
 #include <string>
 #include <SDL/SDL_opengl.h>
 
-static float angle = 0.0f;
-
 Pyramid::Pyramid() {
 	x = 0.0f;
 	y = 0.0f;
 	z = 0.0f;
 	name = "pyramid";
+	angle = 0.0f;
 }
 
 void Pyramid::draw() {

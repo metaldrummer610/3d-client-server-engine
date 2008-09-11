@@ -17,7 +17,10 @@ int main(int argv, char** argc) {
 }
 
 void Client::init() {
-	fpsStr = "FPS: ";
+	T0 = 0;
+	Frames = 0;
+	seconds = 0;
+	fps = 0;
 	renderFPS = false;
 
 	/////////////////////
@@ -75,6 +78,7 @@ void Client::sdl_openglInit(int width, int height) {
 
 	/* First, initialize SDL's video subsystem. */
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+		string fpsStr;
 		/* Failed, exit. */
 		fprintf(stderr, "Video initialization failed: %s\n", SDL_GetError());
 		exit(1);
@@ -100,7 +104,7 @@ void Client::sdl_openglInit(int width, int height) {
 	flags = SDL_OPENGL | SDL_RESIZABLE;
 
 	/*
-	 * Set the video mode
+	 * Set the video modestring fpsStr;
 	 */
 	if (SDL_SetVideoMode(width, height, bpp, flags) == 0) {
 		/*
@@ -153,6 +157,23 @@ void Client::deinit() {
 	enet_host_destroy(client);
 }
 
+void Client::addEventToStack(std::string x, ...) {
+	char text[256]; /* Holds our string */
+	va_list ap; /* Pointer to our list of elements */
+
+	const char* tmp = x.c_str();
+
+	/* Parses The String For Variables */
+	va_start(ap, tmp);
+	/* Converts Symbols To Actual Numbers */
+	vsprintf(text, tmp, ap);
+	va_end(ap);
+
+	std::string s(text);
+
+	events.addEvent(s, SDL_GetTicks());
+}
+
 void Client::render() {
 	/* Clear the color and depth buffers. */
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -161,8 +182,8 @@ void Client::render() {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	if (renderFPS)
-		fontFactory.glPrint(0, SCREEN_HEIGHT - 35, fpsStr.c_str());
+	getFPS();
+	displayEvents();
 
 	glLoadIdentity();
 
@@ -176,21 +197,45 @@ void Client::render() {
 
 	SDL_GL_SwapBuffers();
 
-	/* Gather our frames per second */
+	/* Increment our FPS counter */
 	Frames++;
-	{
-		GLint t = SDL_GetTicks();
-		if (t - T0 >= 5000) {
-			seconds = (t - T0) / 1000.0;
-			fps = Frames / seconds;
-			std::stringstream str(std::stringstream::in
-					| std::stringstream::out);
+}
 
-			str << "FPS: " << Frames << " frames in " << seconds << " seconds = " << fps;
-			fpsStr = str.str();
-			T0 = t;
-			Frames = 0;
+void Client::displayEvents() {
+	int ticks = SDL_GetTicks();
+
+	if (!events.isEmpty()) {
+		while (ticks - events.getTimeOnStack() >= 2500) {
+			if(!events.deleteEvent())
+				return;
 		}
+
+		if (!events.isEmpty()) {
+			std::deque<std::string>::const_iterator it;
+
+			int currentY = fontFactory.getFontSize() + 5;
+
+			for (it = events.getFront(); it != events.getBack(); it++) {
+				fontFactory.glPrint(0,
+						currentY + fontFactory.getFontSize() + 5,
+						&(*it->c_str()));
+			}
+		}
+	}
+}
+
+void Client::getFPS() {
+	if (renderFPS) {
+		fontFactory.glPrint(0, SCREEN_HEIGHT - 35,
+				"%d frames in %g seconds = %g FPS\n", totalFrames, seconds, fps);
+	}
+	GLint t = SDL_GetTicks();
+	if (t - T0 >= 1000) {
+		seconds = (t - T0) / 1000.0;
+		fps = Frames / seconds;
+		totalFrames = Frames;
+		T0 = t;
+		Frames = 0;
 	}
 }
 
@@ -211,6 +256,7 @@ void Client::handlePacket(ENetPacket *p) {
 
 		modelList.insert(pair<int, AbstractModel*> (a->getId(), a));
 
+		addEventToStack("A player has joined the game");
 		return;
 	}
 
@@ -223,6 +269,25 @@ void Client::handlePacket(ENetPacket *p) {
 		AbstractModel* c = modelFactory.getModel(str);
 
 		modelList[c->getId()] = c;
+
+		return;
+	}
+
+	i = s.find("removeModel");
+
+	if (i != -1) {
+		i += 12;
+		string str = s.substr(i);
+
+		istringstream ss(str);
+
+		int id = 0;
+
+		ss >> id;
+
+		modelList.erase(id);
+
+		addEventToStack("A player has left the game");
 
 		return;
 	}
@@ -325,7 +390,7 @@ void Client::handleKeyPress(SDL_keysym *keysym) {
 		 */
 		//	SDL_WM_ToggleFullScreen(screen);
 		//	break;
-	case SDLK_f:
+	case SDLK_TAB:
 		if (!renderFPS)
 			renderFPS = true;
 		else
@@ -397,8 +462,8 @@ void Client::mainLoop() {
 		while (enet_host_service(client, &event, 1) > 0) {
 			switch (event.type) {
 			case ENET_EVENT_TYPE_CONNECT:
-				printf("A new client connected from %x:%u.\n",
-						event.peer -> address.host, event.peer -> address.port);
+				//addEventToStack("A new client connected from %x:%u",
+				//		event.peer -> address.host, event.peer -> address.port);
 
 				/* Store any relevant client information here. */
 				event.peer -> data = (void*) "Client information";

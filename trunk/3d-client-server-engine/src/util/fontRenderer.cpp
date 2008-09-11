@@ -3,11 +3,12 @@
 
 FontRenderer::FontRenderer() {
 	fontpath = "resources/action_force_normal.ttf";
+	fontSize = 12;
 
 	TTF_Init();
 	atexit(TTF_Quit);
 
-	if (!(font = TTF_OpenFont(fontpath.c_str(), 20))) {
+	if (!(font = TTF_OpenFont(fontpath.c_str(), fontSize))) {
 		std::cout << "Error loading font: " << TTF_GetError() << std::endl;
 		exit(1);
 	}
@@ -15,6 +16,10 @@ FontRenderer::FontRenderer() {
 
 FontRenderer::~FontRenderer(){
 	TTF_CloseFont(font);
+}
+
+int FontRenderer::getFontSize(){
+	return fontSize;
 }
 
 int FontRenderer::round(double x) {
