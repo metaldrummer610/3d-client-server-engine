@@ -3,12 +3,15 @@
 #include <enet/enet.h>
 #include <vector>
 #include <map>
+#include <stack>
+#include <string>
 #include <SDL/SDL.h>
 #include <SDL/SDL_ttf.h>
 #include <SDL/SDL_opengl.h>
 #include "../model/modelFactory.h"
 #include "../util/fileLoader.h"
 #include "../util/fontRenderer.h"
+#include "../util/eventStack.h"
 
 class Client {
 private:
@@ -16,6 +19,7 @@ private:
 	int SCREEN_HEIGHT;
 	ENetHost* client;
 	std::map<int, AbstractModel*> modelList;
+	EventStack events;
 	AbstractModel* player;
 	ModelFactory modelFactory;
 	FontRenderer fontFactory;
@@ -27,15 +31,20 @@ private:
 	int videoFlags;
 	int bpp;
 
-	string fpsStr;
 	GLint T0;
 	GLint Frames;
+	GLint totalFrames;
 	GLfloat seconds;
 	GLfloat fps;
 	bool renderFPS;
 
 	FileLoader fileLoader;
 	std::map<std::string, std::string> properties;
+
+	void getFPS();
+
+	void addEventToStack(std::string x, ...);
+	void displayEvents();
 
 public:
 	void init();

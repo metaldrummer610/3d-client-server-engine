@@ -21,5 +21,6 @@ public:
 	AbstractModel* createModel();
 	void handlePacket(ENetPacket* p);
 	void sendUpdatedModel(AbstractModel* m);
+	void sendRemoveModel(AbstractModel* m);
 };
 #endif

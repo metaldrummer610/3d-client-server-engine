@@ -4,6 +4,8 @@
 #include "abstractModel.h"
 
 class Pyramid: public AbstractModel {
+private:
+	float angle;
 public:
 	Pyramid();
 	void draw();

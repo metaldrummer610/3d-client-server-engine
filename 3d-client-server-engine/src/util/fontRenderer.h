@@ -17,6 +17,7 @@ private:
 	void glDisable2D();
 	void drawText(char *text, TTF_Font *font, SDL_Color color, SDL_Rect *location);
 	TTF_Font* font;
+	int fontSize;
 	SDL_Color color;
 	SDL_Rect position;
 	std::string fontpath;
@@ -24,6 +25,7 @@ public:
 	FontRenderer();
 	~FontRenderer();
 	void glPrint(int x, int y, const char *fmt, ...);
+	int getFontSize();
 };
 
 #endif
