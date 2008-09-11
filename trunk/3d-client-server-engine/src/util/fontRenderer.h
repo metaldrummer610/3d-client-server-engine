@@ -26,6 +26,7 @@ public:
 	~FontRenderer();
 	void glPrint(int x, int y, const char *fmt, ...);
 	int getFontSize();
+	void setFontSize(int i);
 };
 
 #endif
