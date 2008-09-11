@@ -2,6 +2,10 @@
 
 #include "modelFactory.h"
 
+ModelFactory::ModelFactory() {
+	sphereFilePath = "resources/models/sphere.obj";
+}
+
 AbstractModel* ModelFactory::getModel(std::string s) {
 
 	std::string::iterator it;
@@ -76,5 +80,7 @@ AbstractModel* ModelFactory::getModelByName(std::string name) {
 		return new Cube();
 	} else if (name.compare("pyramid") == 0) {
 		return new Pyramid();
+	} else if (name.compare("sphere") == 0) {
+		return wfLoader.load(sphereFilePath.c_str());
 	}
 }

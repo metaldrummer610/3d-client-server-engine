@@ -154,6 +154,18 @@ void Client::sdl_openglInit(int width, int height) {
 }
 
 void Client::deinit() {
+	enet_peer_disconnect(peer, 0);
+
+	while (enet_host_service(client, &event, 3000) > 0) {
+		switch (event.type) {
+		case ENET_EVENT_TYPE_DISCONNECT:
+			printf("%s disconected.\n", event.peer -> data);
+
+			/* Reset the peer's client information. */
+			event.peer -> data = NULL;
+		}
+	}
+
 	enet_host_destroy(client);
 }
 
@@ -206,7 +218,7 @@ void Client::displayEvents() {
 
 	if (!events.isEmpty()) {
 		while (ticks - events.getTimeOnStack() >= 2500) {
-			if(!events.deleteEvent())
+			if (!events.deleteEvent())
 				return;
 		}
 
@@ -411,6 +423,12 @@ void Client::handleKeyPress(SDL_keysym *keysym) {
 	case SDLK_d:
 		sendPacket("move,x,0.125");
 		player->setX(player->getX() + 0.125f);
+		break;
+	case SDLK_UP:
+		fontFactory.setFontSize(fontFactory.getFontSize() + 1);
+		break;
+	case SDLK_DOWN:
+		fontFactory.setFontSize(fontFactory.getFontSize() - 1);
 		break;
 	default:
 		break;
