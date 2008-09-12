@@ -154,6 +154,18 @@ void Client::sdl_openglInit(int width, int height) {
 }
 
 void Client::deinit() {
+	enet_peer_disconnect(peer, 0);
+
+	while (enet_host_service(client, &event, 3000) > 0) {
+		switch (event.type) {
+		case ENET_EVENT_TYPE_DISCONNECT:
+			printf("%s disconnected.\n", event.peer -> data);
+
+			/* Reset the peer's client information. */
+			event.peer -> data = NULL;
+		}
+	}
+
 	enet_host_destroy(client);
 }
 
@@ -205,8 +217,8 @@ void Client::displayEvents() {
 	int ticks = SDL_GetTicks();
 
 	if (!events.isEmpty()) {
-		while (ticks - events.getTimeOnStack() >= 2500) {
-			if(!events.deleteEvent())
+		while (ticks - events.getTimeOnStack() >= 5000) {
+			if (!events.deleteEvent())
 				return;
 		}
 
@@ -214,14 +226,13 @@ void Client::displayEvents() {
 			std::deque<std::string>::const_iterator it;
 
 			int currentY = fontFactory.getFontSize() + 5;
-
 			for (it = events.getFront(); it != events.getBack(); it++) {
-				fontFactory.glPrint(0,
-						currentY + fontFactory.getFontSize() + 5,
-						&(*it->c_str()));
+				currentY = currentY + fontFactory.getFontSize() + 5;
+				fontFactory.glPrint(0, currentY, &(*it->c_str()));
 			}
 		}
 	}
+
 }
 
 void Client::getFPS() {
@@ -268,7 +279,13 @@ void Client::handlePacket(ENetPacket *p) {
 
 		AbstractModel* c = modelFactory.getModel(str);
 
-		modelList[c->getId()] = c;
+		//modelList[c->getId()] = c;
+
+		AbstractModel* a = modelList[c->getId()];
+
+		a->setX(c->getX());
+		a->setY(c->getY());
+		a->setZ(c->getZ());
 
 		return;
 	}
@@ -333,6 +350,49 @@ void Client::handlePacket(ENetPacket *p) {
 
 		return;
 	}
+
+	i = s.find("text");
+
+	if (i != -1) {
+		i += 5;
+		string tmp = s.substr(i);
+
+		string::iterator it;
+		string temp = "";
+
+		string text = "";
+		int id = 0;
+
+		bool textDone = false;
+		bool idDone = false;
+
+		for (it = tmp.begin(); it != tmp.end(); it++) {
+			if (*it != ',') {
+				char c = *it;
+				//cout << "c is: " << *it << ":" << endl;
+				temp.append(&c);
+			} else {
+				//cout << "temp is: " << temp << endl;
+				istringstream in;
+				in >> std::noskipws;
+				in.str(temp);
+
+				if (idDone == false) {
+					in >> id;
+					idDone = true;
+				} else if (textDone == false) {
+					text = in.str();
+					textDone = true;
+				}
+
+				temp = "";
+			}
+		}
+
+		addEventToStack("[%d] %s", id, text.c_str());
+		return;
+	}
+
 }
 
 /* function to reset our viewport after a window resize */
@@ -396,6 +456,9 @@ void Client::handleKeyPress(SDL_keysym *keysym) {
 		else
 			renderFPS = false;
 		break;
+	case SDLK_1:
+		sendPacket("text,Hello World");
+		break;
 	case SDLK_w:
 		sendPacket("move,y,0.125");
 		player->setY(player->getY() + 0.125f);
@@ -411,6 +474,20 @@ void Client::handleKeyPress(SDL_keysym *keysym) {
 	case SDLK_d:
 		sendPacket("move,x,0.125");
 		player->setX(player->getX() + 0.125f);
+		break;
+	case SDLK_q:
+		sendPacket("move,z,-0.125");
+		player->setZ(player->getZ() - 0.125f);
+		break;
+	case SDLK_e:
+		sendPacket("move,z,0.125");
+		player->setZ(player->getZ() + 0.125f);
+		break;
+	case SDLK_UP:
+		fontFactory.setFontSize(fontFactory.getFontSize() + 1);
+		break;
+	case SDLK_DOWN:
+		fontFactory.setFontSize(fontFactory.getFontSize() - 1);
 		break;
 	default:
 		break;
