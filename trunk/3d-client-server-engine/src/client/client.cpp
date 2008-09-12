@@ -23,6 +23,21 @@ void Client::init() {
 	fps = 0;
 	renderFPS = false;
 
+	LightAmbient[0] = 0.5f;
+	LightAmbient[1] = 0.5f;
+	LightAmbient[2] = 0.5f;
+	LightAmbient[3] = 1.0f;
+
+	LightDiffuse[0] = 1.0f;
+	LightDiffuse[1] = 1.0f;
+	LightDiffuse[2] = 1.0f;
+	LightDiffuse[3] = 1.0f;
+
+	LightPosition[0] = 0.0f;
+	LightPosition[1] = 0.0f;
+	LightPosition[2] = 2.0f;
+	LightPosition[3] = 1.0f;
+
 	/////////////////////
 	// load up config file and set properties
 	/////////////////////
@@ -127,9 +142,17 @@ void Client::sdl_openglInit(int width, int height) {
 	/* Our shading model--Gouraud (smooth). */
 	glShadeModel(GL_SMOOTH);
 	glDepthFunc(GL_LEQUAL);
+	glClearDepth(1.0f); // Depth Buffer Setup
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 	glBlendFunc(GL_ONE, GL_ONE);
 	glEnable(GL_BLEND);
+
+	glLightfv(GL_LIGHT1, GL_AMBIENT, LightAmbient); // Setup The Ambient Light
+	glLightfv(GL_LIGHT1, GL_DIFFUSE, LightDiffuse); // Setup The Diffuse Light
+	glLightfv(GL_LIGHT1, GL_POSITION, LightPosition); // Position The Light
+	glEnable(GL_LIGHT1); // Enable Light One
+
+	glEnable(GL_LIGHTING);
 
 	/* Culling. */
 	glCullFace(GL_BACK);
@@ -137,7 +160,7 @@ void Client::sdl_openglInit(int width, int height) {
 	glEnable(GL_CULL_FACE);
 
 	/* Set the clear color. */
-	glClearColor(0, 0, 1.0f, 1.0f);
+	glClearColor(0, 0, 0.0f, 1.0f);
 
 	/* Setup our viewport. */
 	glViewport(0, 0, width, height);
@@ -159,7 +182,7 @@ void Client::deinit() {
 	while (enet_host_service(client, &event, 3000) > 0) {
 		switch (event.type) {
 		case ENET_EVENT_TYPE_DISCONNECT:
-			printf("%s disconected.\n", event.peer -> data);
+			printf("%s disconnected.\n", event.peer -> data);
 
 			/* Reset the peer's client information. */
 			event.peer -> data = NULL;
@@ -422,6 +445,14 @@ void Client::handleKeyPress(SDL_keysym *keysym) {
 		break;
 	case SDLK_d:
 		sendPacket("move,x,0.125");
+		player->setX(player->getX() + 0.125f);
+		break;
+	case SDLK_q:
+		sendPacket("move,z,-0.125");
+		player->setY(player->getY() - 0.125f);
+		break;
+	case SDLK_e:
+		sendPacket("move,z,0.125");
 		player->setX(player->getX() + 0.125f);
 		break;
 	case SDLK_UP:

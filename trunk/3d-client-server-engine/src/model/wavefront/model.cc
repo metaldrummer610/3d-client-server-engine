@@ -60,6 +60,7 @@ std::string WavefrontModel::serialize() {
 
 	ss << name << "," << id << "," << x << "," << y << "," << z << ",";
 
+	cout << "serialized string is " << ss.str() << endl;
 	return ss.str();
 }
 
@@ -76,10 +77,10 @@ void WavefrontModel::deserialize(std::string& s) {
 	for (it = s.begin(); it != s.end(); it++) {
 		if (*it != ',') {
 			char c = *it;
-			//cout << "c is: " << *it << ":" << endl;
+			cout << "c is: " << *it << ":" << endl;
 			temp.append(&c);
 		} else {
-			//cout << "temp is: " << temp << endl;
+			cout << "temp is: " << temp << endl;
 			std::istringstream in(temp);
 
 			if (idDone == false) {

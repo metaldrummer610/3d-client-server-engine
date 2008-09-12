@@ -87,14 +87,14 @@ void FontRenderer::drawText(char *text, TTF_Font *font, SDL_Color color,
 
 	intermediary = SDL_CreateRGBSurface(0, w, h, 32,
 #if SDL_BYTEORDER != SDL_LIL_ENDIAN // OpenGL RGBA masks
-			0x000000FF,
-			0x0000FF00,
-			0x00FF0000,
-			0xFF000000
+                               0x000000FF,
+                               0x0000FF00,
+                               0x00FF0000,
+                               0xFF000000
 #else
-			0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF
+                               0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF
 #endif
-			);
+								);
 	//0x00ff0000, 0x0000ff00,
 	//0x000000ff, 0xff000000);
 

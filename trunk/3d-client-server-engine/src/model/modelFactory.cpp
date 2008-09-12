@@ -1,9 +1,10 @@
 #include <sstream>
+#include <iostream>
 
 #include "modelFactory.h"
 
 ModelFactory::ModelFactory() {
-	sphereFilePath = "resources/models/sphere.obj";
+	sphereFilePath = "resources/models/ILOVELAMP.obj";
 }
 
 AbstractModel* ModelFactory::getModel(std::string s) {
@@ -27,10 +28,10 @@ AbstractModel* ModelFactory::getModel(std::string s) {
 	for (it = s.begin(); it != s.end(); it++) {
 		if (*it != ',') {
 			char c = *it;
-			//cout << "c is: " << *it << ":" << endl;
+			//std::cout << "c is: " << *it << ":" << std::endl;
 			temp.append(&c);
 		} else {
-			//cout << "temp is: " << temp << endl;
+			//std::cout << "temp is: " << temp << std::endl;
 			std::istringstream in(temp);
 
 			if (nameDone == false) {
@@ -65,6 +66,15 @@ AbstractModel* ModelFactory::getModel(std::string s) {
 		return a;
 	} else if (name.compare("pyramid") == 0) {
 		AbstractModel* a = new Pyramid();
+
+		a->setId(id);
+		a->setX(x);
+		a->setY(y);
+		a->setZ(z);
+
+		return a;
+	} else if (name.find("resources/models") != -1) {
+		AbstractModel* a = wfLoader.load(name.c_str());
 
 		a->setId(id);
 		a->setX(x);

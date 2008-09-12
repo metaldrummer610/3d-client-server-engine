@@ -196,10 +196,9 @@ void rm_white(string &str) {
 AbstractModel*
 WavefrontLoader::load(const char* str)
 {
-	AbstractModel* absModel;
-	WavefrontModel* model;
+	WavefrontModel* model = new WavefrontModel();
 
-	model = new WavefrontModel();
+	model->setName(str);
 
 	WavefrontParser::callbacks_t& callbacks = parser->callbacks;
 	istringstream param;
@@ -221,13 +220,13 @@ WavefrontLoader::load(const char* str)
 				callbacks[value](param,*model);
 			}catch(boost::bad_function_call& b)
 			{
-				cerr << "invalid wavefront spec (" << value << ")" <<  endl;
+				//cerr << "invalid wavefront spec (" << value << ")" <<  endl;
 			}
 		}
 	}
 
-	absModel = model;
 
-	return absModel;
+
+	return (AbstractModel*)model;
 }
 

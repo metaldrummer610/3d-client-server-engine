@@ -24,5 +24,6 @@ public:
 	void setY(float f) {y = f;}
 	void setZ(float f) {z = f;}
 	void setId(int i) {id = i;}
+	void setName(std::string s) {name = s;}
 };
 #endif

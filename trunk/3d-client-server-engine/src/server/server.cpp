@@ -48,10 +48,10 @@ void Server::deinit() {
 }
 
 void Server::addModelToList(ENetPeer* p) {
-	AbstractModel* a = factory.getModelByName("pyramid");
+	AbstractModel* a = factory.getModelByName("sphere");
 	a->setX(-9.0f);
 	a->setY(5.2f);
-	a->setZ(-23.3245f);
+	a->setZ(-50.3245f);
 	a->setId((int&) p->data);
 	modelList.insert(pair<int, AbstractModel*> (a->getId(), a));
 }
