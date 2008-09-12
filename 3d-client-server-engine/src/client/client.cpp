@@ -147,20 +147,13 @@ void Client::sdl_openglInit(int width, int height) {
 	glBlendFunc(GL_ONE, GL_ONE);
 	glEnable(GL_BLEND);
 
-	glLightfv(GL_LIGHT1, GL_AMBIENT, LightAmbient); // Setup The Ambient Light
-	glLightfv(GL_LIGHT1, GL_DIFFUSE, LightDiffuse); // Setup The Diffuse Light
-	glLightfv(GL_LIGHT1, GL_POSITION, LightPosition); // Position The Light
-	glEnable(GL_LIGHT1); // Enable Light One
-
-	glEnable(GL_LIGHTING);
-
 	/* Culling. */
 	glCullFace(GL_BACK);
 	glFrontFace(GL_CCW);
 	glEnable(GL_CULL_FACE);
 
 	/* Set the clear color. */
-	glClearColor(0, 0, 0.0f, 1.0f);
+	glClearColor(0, 0, 1.0f, 1.0f);
 
 	/* Setup our viewport. */
 	glViewport(0, 0, width, height);
@@ -240,7 +233,7 @@ void Client::displayEvents() {
 	int ticks = SDL_GetTicks();
 
 	if (!events.isEmpty()) {
-		while (ticks - events.getTimeOnStack() >= 2500) {
+		while (ticks - events.getTimeOnStack() >= 5000) {
 			if (!events.deleteEvent())
 				return;
 		}
@@ -249,11 +242,9 @@ void Client::displayEvents() {
 			std::deque<std::string>::const_iterator it;
 
 			int currentY = fontFactory.getFontSize() + 5;
-
 			for (it = events.getFront(); it != events.getBack(); it++) {
-				fontFactory.glPrint(0,
-						currentY + fontFactory.getFontSize() + 5,
-						&(*it->c_str()));
+				currentY = currentY + fontFactory.getFontSize() + 5;
+				fontFactory.glPrint(0, currentY, &(*it->c_str()));
 			}
 		}
 	}
@@ -262,7 +253,7 @@ void Client::displayEvents() {
 void Client::getFPS() {
 	if (renderFPS) {
 		fontFactory.glPrint(0, SCREEN_HEIGHT - 35,
-				"%d frames in %g seconds = %g FPS\n", totalFrames, seconds, fps);
+				"%d frames in %g seconds = %g FPS", totalFrames, seconds, fps);
 	}
 	GLint t = SDL_GetTicks();
 	if (t - T0 >= 1000) {
@@ -276,6 +267,7 @@ void Client::getFPS() {
 
 void Client::handlePacket(ENetPacket *p) {
 	stringstream ss(stringstream::in | stringstream::out);
+	//ss >> std::noskipws;
 
 	ss << p->data;
 
@@ -303,7 +295,11 @@ void Client::handlePacket(ENetPacket *p) {
 
 		AbstractModel* c = modelFactory.getModel(str);
 
-		modelList[c->getId()] = c;
+		AbstractModel* a = modelList[c->getId()];
+
+		a->setX(c->getX());
+		a->setY(c->getY());
+		a->setZ(c->getZ());
 
 		return;
 	}
@@ -368,6 +364,48 @@ void Client::handlePacket(ENetPacket *p) {
 
 		return;
 	}
+
+	i = s.find("text");
+
+	if (i != -1) {
+		i += 5;
+		string tmp = s.substr(i);
+
+		string::iterator it;
+		string temp = "";
+
+		string text = "";
+		int id = 0;
+
+		bool textDone = false;
+		bool idDone = false;
+
+		for (it = tmp.begin(); it != tmp.end(); it++) {
+			if (*it != ',') {
+				char c = *it;
+				//cout << "c is: " << *it << ":" << endl;
+				temp.append(&c);
+			} else {
+				//cout << "temp is: " << temp << endl;
+				istringstream in;
+				in >> std::noskipws;
+				in.str(temp);
+
+				if (idDone == false) {
+					in >> id;
+					idDone = true;
+				} else if (textDone == false) {
+					text = in.str();
+					textDone = true;
+				}
+
+				temp = "";
+			}
+		}
+
+		addEventToStack("[%d] %s", id, text.c_str());
+		return;
+	}
 }
 
 /* function to reset our viewport after a window resize */
@@ -389,7 +427,7 @@ int Client::resizeWindow(int width, int height) {
 	glLoadIdentity();
 
 	/* Set our perspective */
-	gluPerspective(45.0f, ratio, 0.1f, 100.0f);
+	gluPerspective(45.0f, ratio, 0.1f, 1024.0f);
 
 	/* Make sure we're chaning the model view and not the projection */
 	glMatrixMode(GL_MODELVIEW);
@@ -400,6 +438,7 @@ int Client::resizeWindow(int width, int height) {
 
 void Client::sendPacket(string s) {
 	stringstream ss(stringstream::in | stringstream::out);
+
 	ss << s << "," << player->getId() << ",";
 
 	string str = ss.str();
@@ -430,6 +469,9 @@ void Client::handleKeyPress(SDL_keysym *keysym) {
 			renderFPS = true;
 		else
 			renderFPS = false;
+		break;
+	case SDLK_1:
+		sendPacket("text,Hello World");
 		break;
 	case SDLK_w:
 		sendPacket("move,y,0.125");
@@ -521,7 +563,7 @@ void Client::mainLoop() {
 
 			case ENET_EVENT_TYPE_RECEIVE:
 				handlePacket(event.packet);
-				//cout << "event data " << event.packet->data << endl;
+				cout << "event data " << event.packet->data << endl;
 
 				/* Clean up the packet now that we're done using it. */
 				enet_packet_destroy(event.packet);

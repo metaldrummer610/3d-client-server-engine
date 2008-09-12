@@ -48,10 +48,10 @@ void Server::deinit() {
 }
 
 void Server::addModelToList(ENetPeer* p) {
-	AbstractModel* a = factory.getModelByName("sphere");
+	AbstractModel* a = factory.getModelByName("pyramid");
 	a->setX(-9.0f);
 	a->setY(5.2f);
-	a->setZ(-50.3245f);
+	a->setZ(-25.3245f);
 	a->setId((int&) p->data);
 	modelList.insert(pair<int, AbstractModel*> (a->getId(), a));
 }
@@ -89,6 +89,7 @@ void Server::sendModels(ENetPeer *p) {
 void Server::handlePacket(ENetPacket* p) {
 
 	stringstream ss(stringstream::in | stringstream::out);
+	//ss >> std::noskipws;
 
 	ss << p->data;
 
@@ -147,6 +148,55 @@ void Server::handlePacket(ENetPacket* p) {
 		}
 
 		sendUpdatedModel(c);
+	}
+
+	i = s.find("text");
+
+	if (i != -1) {
+		i += 5;
+		string tmp = s.substr(i);
+
+		string::iterator it;
+		string temp = "";
+
+		string text = "";
+		int id = 0;
+
+		bool textDone = false;
+		bool idDone = false;
+
+		for (it = tmp.begin(); it != tmp.end(); it++) {
+			if (*it != ',') {
+				char c = *it;
+				//cout << "c is: " << *it << ":" << endl;
+				temp.append(&c);
+			} else {
+				//cout << "temp is: " << temp << endl;
+				istringstream in;
+				in >> std::noskipws;
+				in.str(temp);
+
+				if (textDone == false) {
+					text = in.str();
+					textDone = true;
+				} else if (idDone == false) {
+					in >> id;
+					idDone = true;
+				}
+
+				temp = "";
+			}
+		}
+
+		stringstream ss(stringstream::in | stringstream::out);
+		ss >> std::noskipws;
+
+		ss << "text," << id << "," << text << ",";
+
+		ENetPacket* packet = enet_packet_create(ss.str().c_str(), strlen(
+				ss.str().c_str()) + 1, ENET_PACKET_FLAG_RELIABLE);
+
+		enet_host_broadcast(server, 0, packet);
 	}
 }
 
