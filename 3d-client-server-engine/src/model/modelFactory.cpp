@@ -1,11 +1,6 @@
 #include <sstream>
-#include <iostream>
 
 #include "modelFactory.h"
-
-ModelFactory::ModelFactory() {
-	sphereFilePath = "resources/models/ILOVELAMP.obj";
-}
 
 AbstractModel* ModelFactory::getModel(std::string s) {
 
@@ -28,10 +23,10 @@ AbstractModel* ModelFactory::getModel(std::string s) {
 	for (it = s.begin(); it != s.end(); it++) {
 		if (*it != ',') {
 			char c = *it;
-			//std::cout << "c is: " << *it << ":" << std::endl;
+			//cout << "c is: " << *it << ":" << endl;
 			temp.append(&c);
 		} else {
-			//std::cout << "temp is: " << temp << std::endl;
+			//cout << "temp is: " << temp << endl;
 			std::istringstream in(temp);
 
 			if (nameDone == false) {
@@ -73,15 +68,6 @@ AbstractModel* ModelFactory::getModel(std::string s) {
 		a->setZ(z);
 
 		return a;
-	} else if (name.find("resources/models") != -1) {
-		AbstractModel* a = wfLoader.load(name.c_str());
-
-		a->setId(id);
-		a->setX(x);
-		a->setY(y);
-		a->setZ(z);
-
-		return a;
 	}
 }
 
@@ -90,7 +76,5 @@ AbstractModel* ModelFactory::getModelByName(std::string name) {
 		return new Cube();
 	} else if (name.compare("pyramid") == 0) {
 		return new Pyramid();
-	} else if (name.compare("sphere") == 0) {
-		return wfLoader.load(sphereFilePath.c_str());
 	}
 }
