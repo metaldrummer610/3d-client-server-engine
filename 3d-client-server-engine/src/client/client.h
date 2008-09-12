@@ -31,6 +31,10 @@ private:
 	int videoFlags;
 	int bpp;
 
+	GLfloat LightAmbient[];
+	GLfloat LightDiffuse[];
+	GLfloat LightPosition[];
+
 	GLint T0;
 	GLint Frames;
 	GLint totalFrames;
