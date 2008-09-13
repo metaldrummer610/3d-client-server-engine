@@ -238,7 +238,7 @@ void Client::displayEvents() {
 void Client::getFPS() {
 	if (renderFPS) {
 		fontFactory.glPrint(0, SCREEN_HEIGHT - 35,
-				"%d frames in %g seconds = %g FPS\n", totalFrames, seconds, fps);
+				"%d frames in %g seconds = %g FPS", totalFrames, seconds, fps);
 	}
 	GLint t = SDL_GetTicks();
 	if (t - T0 >= 1000) {
