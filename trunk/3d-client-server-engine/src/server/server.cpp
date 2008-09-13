@@ -48,10 +48,10 @@ void Server::deinit() {
 }
 
 void Server::addModelToList(ENetPeer* p) {
-	AbstractModel* a = factory.getModelByName("pyramid");
+	AbstractModel* a = factory.getModelByName("resources/models/testBox.obj");
 	a->setX(-9.0f);
 	a->setY(5.2f);
-	a->setZ(-25.3245f);
+	a->setZ(-23.3245f);
 	a->setId((int&) p->data);
 	modelList.insert(pair<int, AbstractModel*> (a->getId(), a));
 }
@@ -89,7 +89,6 @@ void Server::sendModels(ENetPeer *p) {
 void Server::handlePacket(ENetPacket* p) {
 
 	stringstream ss(stringstream::in | stringstream::out);
-	//ss >> std::noskipws;
 
 	ss << p->data;
 
@@ -148,9 +147,11 @@ void Server::handlePacket(ENetPacket* p) {
 		}
 
 		sendUpdatedModel(c);
+
+		return;
 	}
 
-	i = s.find("text");
+	/*i = s.find("text");
 
 	if (i != -1) {
 		i += 5;
@@ -197,7 +198,10 @@ void Server::handlePacket(ENetPacket* p) {
 				ss.str().c_str()) + 1, ENET_PACKET_FLAG_RELIABLE);
 
 		enet_host_broadcast(server, 0, packet);
-	}
+
+		return;
+	}*/
+
 }
 
 void Server::sendUpdatedModel(AbstractModel* m) {

@@ -23,21 +23,6 @@ void Client::init() {
 	fps = 0;
 	renderFPS = false;
 
-	LightAmbient[0] = 0.5f;
-	LightAmbient[1] = 0.5f;
-	LightAmbient[2] = 0.5f;
-	LightAmbient[3] = 1.0f;
-
-	LightDiffuse[0] = 1.0f;
-	LightDiffuse[1] = 1.0f;
-	LightDiffuse[2] = 1.0f;
-	LightDiffuse[3] = 1.0f;
-
-	LightPosition[0] = 0.0f;
-	LightPosition[1] = 0.0f;
-	LightPosition[2] = 2.0f;
-	LightPosition[3] = 1.0f;
-
 	/////////////////////
 	// load up config file and set properties
 	/////////////////////
@@ -142,7 +127,6 @@ void Client::sdl_openglInit(int width, int height) {
 	/* Our shading model--Gouraud (smooth). */
 	glShadeModel(GL_SMOOTH);
 	glDepthFunc(GL_LEQUAL);
-	glClearDepth(1.0f); // Depth Buffer Setup
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 	glBlendFunc(GL_ONE, GL_ONE);
 	glEnable(GL_BLEND);
@@ -248,6 +232,7 @@ void Client::displayEvents() {
 			}
 		}
 	}
+
 }
 
 void Client::getFPS() {
@@ -267,7 +252,6 @@ void Client::getFPS() {
 
 void Client::handlePacket(ENetPacket *p) {
 	stringstream ss(stringstream::in | stringstream::out);
-	//ss >> std::noskipws;
 
 	ss << p->data;
 
@@ -294,6 +278,8 @@ void Client::handlePacket(ENetPacket *p) {
 		string str = s.substr(i);
 
 		AbstractModel* c = modelFactory.getModel(str);
+
+		//modelList[c->getId()] = c;
 
 		AbstractModel* a = modelList[c->getId()];
 
@@ -406,6 +392,7 @@ void Client::handlePacket(ENetPacket *p) {
 		addEventToStack("[%d] %s", id, text.c_str());
 		return;
 	}
+
 }
 
 /* function to reset our viewport after a window resize */
@@ -427,7 +414,7 @@ int Client::resizeWindow(int width, int height) {
 	glLoadIdentity();
 
 	/* Set our perspective */
-	gluPerspective(45.0f, ratio, 0.1f, 1024.0f);
+	gluPerspective(45.0f, ratio, 0.1f, 100.0f);
 
 	/* Make sure we're chaning the model view and not the projection */
 	glMatrixMode(GL_MODELVIEW);
@@ -438,7 +425,6 @@ int Client::resizeWindow(int width, int height) {
 
 void Client::sendPacket(string s) {
 	stringstream ss(stringstream::in | stringstream::out);
-
 	ss << s << "," << player->getId() << ",";
 
 	string str = ss.str();
@@ -491,11 +477,11 @@ void Client::handleKeyPress(SDL_keysym *keysym) {
 		break;
 	case SDLK_q:
 		sendPacket("move,z,-0.125");
-		player->setY(player->getY() - 0.125f);
+		player->setZ(player->getZ() - 0.125f);
 		break;
 	case SDLK_e:
 		sendPacket("move,z,0.125");
-		player->setX(player->getX() + 0.125f);
+		player->setZ(player->getZ() + 0.125f);
 		break;
 	case SDLK_UP:
 		fontFactory.setFontSize(fontFactory.getFontSize() + 1);
@@ -563,7 +549,7 @@ void Client::mainLoop() {
 
 			case ENET_EVENT_TYPE_RECEIVE:
 				handlePacket(event.packet);
-				cout << "event data " << event.packet->data << endl;
+				//cout << "event data " << event.packet->data << endl;
 
 				/* Clean up the packet now that we're done using it. */
 				enet_packet_destroy(event.packet);

@@ -1,39 +1,23 @@
-#ifndef WAVEFRONT_LOADER_H
-#define WAVEFRONT_LOADER_H
+/*
+ * loader.h
+ *
+ *  Created on: Sep 13, 2008
+ *      Author: metal
+ */
 
-#include <list>
-#include <boost/shared_ptr.hpp>
+#ifndef LOADER_H_
+#define LOADER_H_
 
-#include "model.h"
+#include <string>
+#include "wavefrontModel.h"
 #include "../abstractModel.h"
 
-class WavefrontParser;
-
-/**
- * Loads the wavefront objects
- */
-class WavefrontLoader
-{
-public:
-	/**
-	 * Default constructor
-	 */
-	WavefrontLoader();
-	/**
-	 * Default deconstructor
-	 */
-	~WavefrontLoader();
-
-	/**
-	 * Loads the wavefront object
-	 * from a file.
-	 * @param str the filename
-	 * @returns The wavefront model as a memory managed
-	 * or an invalid memory managed pointer on error.
-	 */
-	AbstractModel* load(const char* str);
-protected:
+class Loader {
 private:
-	boost::shared_ptr<WavefrontParser> parser;
+	void addFace(std::string s, WaveFrontModel* m);
+	void addVertex(std::string s, WaveFrontModel* m);
+public:
+	AbstractModel* loadFile(std::string &s);
 };
-#endif//WAVEFRONT_LOADER_H
+
+#endif /* LOADER_H_ */
