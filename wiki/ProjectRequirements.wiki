@@ -10,6 +10,8 @@
 
   * SDL_ttf
 
+  * Boost
+
 
 = How To Build =
 
