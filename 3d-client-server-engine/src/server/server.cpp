@@ -40,6 +40,12 @@ void Server::init() {
 	atexit(enet_deinitialize);
 
 	peerNumber = 0;
+
+	//////////////////////
+	// sdl init - for the timer
+	//////////////////////
+
+	SDL_Init(SDL_INIT_TIMER);
 }
 
 void Server::deinit() {
@@ -48,7 +54,7 @@ void Server::deinit() {
 }
 
 void Server::addModelToList(ENetPeer* p) {
-	AbstractModel* a = factory.getModelByName("resources/models/testBox.obj");
+	AbstractModel* a = factory.getModelByName("resources/models/sample2.obj");
 	a->setX(-9.0f);
 	a->setY(5.2f);
 	a->setZ(-23.3245f);
@@ -84,6 +90,23 @@ void Server::sendModels(ENetPeer *p) {
 				ss.str().c_str()) + 1, ENET_PACKET_FLAG_RELIABLE);
 		enet_peer_send(p, 0, packet);
 	}
+}
+
+void Server::loadChangedModels(){
+	stringstream ss(stringstream::in | stringstream::out);
+
+	std::map<int, AbstractModel*>::iterator it;
+
+	ss << "reload,";
+
+	for(it = modelList.begin(); it != modelList.end(); it++){
+		ss << (*it).second->serialize();
+	}
+
+	 ENetPacket* packet = enet_packet_create(ss.str().c_str(), strlen(
+			 ss.str().c_str()) + 1, ENET_PACKET_FLAG_RELIABLE);
+
+	 enet_host_broadcast(server, 0, packet);
 }
 
 void Server::handlePacket(ENetPacket* p) {
@@ -153,54 +176,54 @@ void Server::handlePacket(ENetPacket* p) {
 
 	/*i = s.find("text");
 
-	if (i != -1) {
-		i += 5;
-		string tmp = s.substr(i);
+	 if (i != -1) {
+	 i += 5;
+	 string tmp = s.substr(i);
 
-		string::iterator it;
-		string temp = "";
+	 string::iterator it;
+	 string temp = "";
 
-		string text = "";
-		int id = 0;
+	 string text = "";
+	 int id = 0;
 
-		bool textDone = false;
-		bool idDone = false;
+	 bool textDone = false;
+	 bool idDone = false;
 
-		for (it = tmp.begin(); it != tmp.end(); it++) {
-			if (*it != ',') {
-				char c = *it;
-				//cout << "c is: " << *it << ":" << endl;
-				temp.append(&c);
-			} else {
-				//cout << "temp is: " << temp << endl;
-				istringstream in;
-				in >> std::noskipws;
-				in.str(temp);
+	 for (it = tmp.begin(); it != tmp.end(); it++) {
+	 if (*it != ',') {
+	 char c = *it;
+	 //cout << "c is: " << *it << ":" << endl;
+	 temp.append(&c);
+	 } else {
+	 //cout << "temp is: " << temp << endl;
+	 istringstream in;
+	 in >> std::noskipws;
+	 in.str(temp);
 
-				if (textDone == false) {
-					text = in.str();
-					textDone = true;
-				} else if (idDone == false) {
-					in >> id;
-					idDone = true;
-				}
+	 if (textDone == false) {
+	 text = in.str();
+	 textDone = true;
+	 } else if (idDone == false) {
+	 in >> id;
+	 idDone = true;
+	 }
 
-				temp = "";
-			}
-		}
+	 temp = "";
+	 }
+	 }
 
-		stringstream ss(stringstream::in | stringstream::out);
-		ss >> std::noskipws;
+	 stringstream ss(stringstream::in | stringstream::out);
+	 ss >> std::noskipws;
 
-		ss << "text," << id << "," << text << ",";
+	 ss << "text," << id << "," << text << ",";
 
-		ENetPacket* packet = enet_packet_create(ss.str().c_str(), strlen(
-				ss.str().c_str()) + 1, ENET_PACKET_FLAG_RELIABLE);
+	 ENetPacket* packet = enet_packet_create(ss.str().c_str(), strlen(
+	 ss.str().c_str()) + 1, ENET_PACKET_FLAG_RELIABLE);
 
-		enet_host_broadcast(server, 0, packet);
+	 enet_host_broadcast(server, 0, packet);
 
-		return;
-	}*/
+	 return;
+	 }*/
 
 }
 
@@ -230,6 +253,8 @@ void Server::mainLoop() {
 	cout << "Hello World" << endl;
 
 	ENetEvent event;
+
+	int T0 = 0;
 
 	while (true) {
 		/* Wait up to 1000 milliseconds for an event. */
@@ -264,6 +289,13 @@ void Server::mainLoop() {
 				/* Reset the peer's client information. */
 				event.peer -> data = NULL;
 			}
+		}
+
+		int t = SDL_GetTicks();
+		if (t - T0 >= 10000) {
+			T0 = t;
+
+			loadChangedModels();
 		}
 	}
 }

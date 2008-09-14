@@ -1,4 +1,5 @@
 #include <sstream>
+#include <iostream>
 
 #include "modelFactory.h"
 
@@ -68,7 +69,7 @@ AbstractModel* ModelFactory::getModel(std::string s) {
 		a->setZ(z);
 
 		return a;
-	} else if (name.find("resources/models") != -1) {
+	} else if (name.find(".obj") != -1) {
 		AbstractModel* a;
 		a = l.loadFile(name);
 
@@ -86,7 +87,7 @@ AbstractModel* ModelFactory::getModelByName(std::string name) {
 		return new Cube();
 	} else if (name.compare("pyramid") == 0) {
 		return new Pyramid();
-	} else if (name.find("resources/models") == 0) {
+	} else if (name.find(".obj") != -1) {
 		AbstractModel* a;
 		a = l.loadFile(name);
 
