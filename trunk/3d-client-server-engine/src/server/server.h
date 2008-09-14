@@ -2,7 +2,11 @@
 #define _SERVER_H
 #include <enet/enet.h>
 #include <map>
+#include <string>
+#include <SDL/SDL.h>
 #include "../model/modelFactory.h"
+#include "../util/fileLoader.h"
+
 class Server {
 
 private:
@@ -11,6 +15,8 @@ private:
 	std::map<int, AbstractModel*> modelList;
 	ModelFactory factory;
 	int peerNumber;
+
+	void loadChangedModels();
 
 public:
 	void init();
