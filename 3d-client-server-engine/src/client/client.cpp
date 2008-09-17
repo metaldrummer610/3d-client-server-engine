@@ -123,6 +123,22 @@ void Client::sdl_openglInit(int width, int height) {
 
 	float ratio = (float) width / (float) height;
 
+	// Somewhere in the initialization part of your program…
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+
+	// Create light components
+	GLfloat ambientLight[] = { 0.7f, 0.2f, 0.7f, 1.0f };
+	GLfloat diffuseLight[] = { 0.8f, 0.8f, 0.8, 1.0f };
+	GLfloat specularLight[] = { 0.5f, 0.5f, 0.5f, 1.0f };
+	GLfloat position[] = { -1.5f, 1.0f, -4.0f, 1.0f };
+
+	// Assign created components to GL_LIGHT0
+	glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLight);
+	//glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseLight);
+	//glLightfv(GL_LIGHT0, GL_SPECULAR, specularLight);
+	glLightfv(GL_LIGHT0, GL_POSITION, position);
+
 	/* Our shading model--Gouraud (smooth). */
 	glShadeModel(GL_SMOOTH);
 	glDepthFunc(GL_LEQUAL);
@@ -136,7 +152,7 @@ void Client::sdl_openglInit(int width, int height) {
 	glEnable(GL_CULL_FACE);
 
 	/* Set the clear color. */
-	glClearColor(0, 0, 1.0f, 1.0f);
+	glClearColor(0, 0, 0, 1.0f);
 
 	/* Setup our viewport. */
 	glViewport(0, 0, width, height);
@@ -657,7 +673,7 @@ void Client::mainLoop() {
 
 			case ENET_EVENT_TYPE_RECEIVE:
 				handlePacket(event.packet);
-				cout << "event data " << event.packet->data << endl;
+				//cout << "event data " << event.packet->data << endl;
 
 				/* Clean up the packet now that we're done using it. */
 				enet_packet_destroy(event.packet);

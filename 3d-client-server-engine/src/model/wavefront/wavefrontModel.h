@@ -9,6 +9,8 @@
 #define WAVEFRONTMODEL_H_
 
 #include <vector>
+#include <string>
+#include "../abstractModel.h"
 
 using std::vector;
 
@@ -44,7 +46,7 @@ typedef struct {
  * faces hold a number of points. each point holds the index of the vectors for the vertex, texture and normal.
  */
 
-class WavefrontModel {
+class WavefrontModel : public AbstractModel{
 private:
 	vector<Vertex> vertices;
 	vector<Normal> normals;
@@ -56,6 +58,8 @@ public:
 	void addTexture(float x, float y, float z);
 	void addFace(vector<int> vertices, vector<int> textures, vector<int> normals);
 	void draw();
+	std::string serialize();
+	void deserialize(std::string& s);
 };
 
 #endif /* WAVEFRONTMODEL_H_ */

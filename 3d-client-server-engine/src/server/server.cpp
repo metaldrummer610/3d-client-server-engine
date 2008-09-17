@@ -54,7 +54,7 @@ void Server::deinit() {
 }
 
 void Server::addModelToList(ENetPeer* p) {
-	AbstractModel* a = factory.getModelByName("resources/models/sample2.obj");
+	AbstractModel* a = factory.getModelByName("resources/models/shape.obj");
 	a->setX(-9.0f);
 	a->setY(5.2f);
 	a->setZ(-23.3245f);

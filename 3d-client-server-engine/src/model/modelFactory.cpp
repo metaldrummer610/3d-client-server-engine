@@ -71,7 +71,7 @@ AbstractModel* ModelFactory::getModel(std::string s) {
 		return a;
 	} else if (name.find(".obj") != -1) {
 		AbstractModel* a;
-		a = l.loadFile(name);
+		a = l.load(name.c_str());
 
 		a->setId(id);
 		a->setX(x);
@@ -89,8 +89,7 @@ AbstractModel* ModelFactory::getModelByName(std::string name) {
 		return new Pyramid();
 	} else if (name.find(".obj") != -1) {
 		AbstractModel* a;
-		a = l.loadFile(name);
-
+		a = l.load(name.c_str());
 		return a;
 	}
 }

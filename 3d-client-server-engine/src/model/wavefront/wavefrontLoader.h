@@ -19,7 +19,7 @@ private:
 	void handleTexture(WavefrontModel* m, std::string s);
 	void handleFace(WavefrontModel* m, std::string s);
 public:
-	WavefrontModel* load(const char* str);
+	AbstractModel* load(const char* str);
 };
 
 #endif /* WAVEFRONTLOADER_H_ */
