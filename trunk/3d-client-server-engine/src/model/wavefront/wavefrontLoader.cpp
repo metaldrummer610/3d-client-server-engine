@@ -11,9 +11,7 @@
 #include <vector>
 #include <iostream>
 #include "wavefrontLoader.h"
-
-using std::string;
-using std::vector;
+#include "../../util/common.h"
 
 AbstractModel* WavefrontLoader::load(const char* str) {
 	WavefrontModel* m = new WavefrontModel();
@@ -72,23 +70,6 @@ AbstractModel* WavefrontLoader::load(const char* str) {
 
 	AbstractModel* a = m;
 	return a;
-}
-
-void splitString(const string& str, vector<string>& tokens,
-		const string& delimiters = " ") {
-	// Skip delimiters at beginning.
-	string::size_type lastPos = str.find_first_not_of(delimiters, 0);
-	// Find first "non-delimiter".
-	string::size_type pos = str.find_first_of(delimiters, lastPos);
-
-	while (string::npos != pos || string::npos != lastPos) {
-		// Found a token, add it to the vector.
-		tokens.push_back(str.substr(lastPos, pos - lastPos));
-		// Skip delimiters.  Note the "not_of"
-		lastPos = str.find_first_not_of(delimiters, pos);
-		// Find next "non-delimiter"
-		pos = str.find_first_of(delimiters, lastPos);
-	}
 }
 
 void WavefrontLoader::handleVertex(WavefrontModel* m, std::string s) {

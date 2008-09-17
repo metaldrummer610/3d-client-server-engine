@@ -5,6 +5,7 @@ using namespace std;
 
 #include "client.h"
 #include "../model/modelFactory.h"
+#include "../util/common.h"
 
 int main(int argv, char** argc) {
 	Client c = Client();
@@ -268,6 +269,8 @@ void Client::getFPS() {
 void Client::handlePacket(ENetPacket *p) {
 	stringstream ss(stringstream::in | stringstream::out);
 
+	ss >> std::noskipws;
+
 	ss << p->data;
 
 	string s = ss.str();
@@ -294,13 +297,14 @@ void Client::handlePacket(ENetPacket *p) {
 
 		AbstractModel* c = modelFactory.getModel(str);
 
-		//modelList[c->getId()] = c;
-
 		AbstractModel* a = modelList[c->getId()];
 
 		a->setX(c->getX());
 		a->setY(c->getY());
 		a->setZ(c->getZ());
+		a->setAngleX(c->getAngleX());
+		a->setAngleY(c->getAngleY());
+		a->setAngleZ(c->getAngleZ());
 
 		return;
 	}
@@ -328,36 +332,22 @@ void Client::handlePacket(ENetPacket *p) {
 
 	if (i != -1) {
 		i += 7;
-		string::iterator it;
-		string temp;
+
+		string str = s.substr(i);
 		int spot;
 		string name;
 
-		bool spotDone = false;
-		bool nameDone = false;
+		vector<string> args;
 
-		string str = s.substr(i);
+		splitString(str, args, ",");
 
-		for (it = str.begin(); it != str.end(); it++) {
-			if (*it != ',') {
-				char c = *it;
-				//cout << "c is: " << *it << ":" << endl;
-				temp.append(&c);
-			} else {
-				//cout << "temp is: " << temp << endl;
-				istringstream in(temp);
+		istringstream in;
+		in.str(args[0]);
+		in >> spot;
 
-				if (spotDone == false) {
-					in >> spot;
-					spotDone = true;
-				} else if (nameDone == false) {
-					in >> name;
-					nameDone = true;
-				}
-
-				temp = "";
-			}
-		}
+		in.clear();
+		in.str(args[1]);
+		in >> name;
 
 		AbstractModel* c = modelFactory.getModelByName(name);
 		c = modelList[spot];
@@ -372,37 +362,25 @@ void Client::handlePacket(ENetPacket *p) {
 		i += 5;
 		string tmp = s.substr(i);
 
-		string::iterator it;
-		string temp = "";
-
 		string text = "";
 		int id = 0;
 
-		bool textDone = false;
-		bool idDone = false;
+		vector<string> args;
 
-		for (it = tmp.begin(); it != tmp.end(); it++) {
-			if (*it != ',') {
-				char c = *it;
-				//cout << "c is: " << *it << ":" << endl;
-				temp.append(&c);
-			} else {
-				//cout << "temp is: " << temp << endl;
-				istringstream in;
-				in >> std::noskipws;
-				in.str(temp);
+		splitString(tmp, args, ",");
 
-				if (idDone == false) {
-					in >> id;
-					idDone = true;
-				} else if (textDone == false) {
-					text = in.str();
-					textDone = true;
-				}
+		istringstream in;
+		in >> std::noskipws;
+		in.str(args[0]);
+		in >> text;
 
-				temp = "";
-			}
-		}
+		cout << in.str() << endl;
+
+		in.clear();
+		in.str(args[1]);
+		in >> id;
+
+		cout << text << endl;
 
 		addEventToStack("[%d] %s", id, text.c_str());
 		return;
@@ -516,7 +494,7 @@ void Client::handlePacket(ENetPacket *p) {
 					player = (*it2).second;
 				}
 			}
-		}s}*/
+		}}*/
 }
 
 /* function to reset our viewport after a window resize */
@@ -583,6 +561,7 @@ void Client::handleKeyPress(SDL_keysym *keysym) {
 	case SDLK_1:
 		sendPacket("text,Hello World");
 		break;
+
 	case SDLK_w:
 		sendPacket("move,y,0.125");
 		player->setY(player->getY() + 0.125f);
@@ -607,6 +586,33 @@ void Client::handleKeyPress(SDL_keysym *keysym) {
 		sendPacket("move,z,0.125");
 		player->setZ(player->getZ() + 0.125f);
 		break;
+
+		// rotates the model
+	case SDLK_u:
+		sendPacket("rotate,y,0.125");
+		player->setAngleY(player->getAngleY() + 0.125f);
+		break;
+	case SDLK_h:
+		sendPacket("rotate,x,-0.125");
+		player->setAngleX(player->getAngleX() - 0.125f);
+		break;
+	case SDLK_j:
+		sendPacket("rotate,y,-0.125");
+		player->setAngleY(player->getAngleY() - 0.125f);
+		break;
+	case SDLK_k:
+		sendPacket("rotate,x,0.125");
+		player->setAngleX(player->getAngleX() + 0.125f);
+		break;
+	case SDLK_y:
+		sendPacket("rotate,z,-0.125");
+		player->setAngleZ(player->getAngleZ() - 0.125f);
+		break;
+	case SDLK_i:
+		sendPacket("rotate,z,0.125");
+		player->setAngleZ(player->getAngleZ() + 0.125f);
+		break;
+
 	case SDLK_UP:
 		fontFactory.setFontSize(fontFactory.getFontSize() + 1);
 		break;
@@ -673,7 +679,7 @@ void Client::mainLoop() {
 
 			case ENET_EVENT_TYPE_RECEIVE:
 				handlePacket(event.packet);
-				//cout << "event data " << event.packet->data << endl;
+				cout << "event data " << event.packet->data << endl;
 
 				/* Clean up the packet now that we're done using it. */
 				enet_packet_destroy(event.packet);

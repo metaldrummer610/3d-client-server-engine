@@ -59,7 +59,6 @@ public:
 	void addFace(vector<int> vertices, vector<int> textures, vector<int> normals);
 	void draw();
 	std::string serialize();
-	void deserialize(std::string& s);
 };
 
 #endif /* WAVEFRONTMODEL_H_ */

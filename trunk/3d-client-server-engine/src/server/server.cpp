@@ -5,6 +5,7 @@
 using namespace std;
 
 #include "server.h"
+#include "../util/common.h"
 
 int main(int argc, char ** argv) {
 	Server s = Server();
@@ -54,7 +55,7 @@ void Server::deinit() {
 }
 
 void Server::addModelToList(ENetPeer* p) {
-	AbstractModel* a = factory.getModelByName("resources/models/shape.obj");
+	AbstractModel* a = factory.getModelByName("resources/models/grid.obj");
 	a->setX(-9.0f);
 	a->setY(5.2f);
 	a->setZ(-23.3245f);
@@ -113,6 +114,8 @@ void Server::handlePacket(ENetPacket* p) {
 
 	stringstream ss(stringstream::in | stringstream::out);
 
+	ss >> std::noskipws;
+
 	ss << p->data;
 
 	string s = ss.str();
@@ -121,43 +124,27 @@ void Server::handlePacket(ENetPacket* p) {
 
 	if (i != -1) {
 		i += 5;
-		string tmp = s.substr(i);
-
-		string::iterator it;
-		string temp;
-		temp = "";
+		string temp = s.substr(i);
 
 		string axis = "";
 		float distance = 0;
 		int id = 0;
 
-		bool axisDone = false;
-		bool distanceDone = false;
-		bool idDone = false;
+		vector<string> args;
 
-		for (it = tmp.begin(); it != tmp.end(); it++) {
-			if (*it != ',') {
-				char c = *it;
-				//cout << "c is: " << *it << ":" << endl;
-				temp.append(&c);
-			} else {
-				//cout << "temp is: " << temp << endl;
-				istringstream in(temp);
+		splitString(temp, args, ",");
 
-				if (axisDone == false) {
-					in >> axis;
-					axisDone = true;
-				} else if (distanceDone == false) {
-					in >> distance;
-					distanceDone = true;
-				} else if (idDone == false) {
-					in >> id;
-					idDone = true;
-				}
+		istringstream in;
+		in.str(args[0]);
+		in >> axis;
 
-				temp = "";
-			}
-		}
+		in.clear();
+		in.str(args[1]);
+		in >> distance;
+
+		in.clear();
+		in.str(args[2]);
+		in >> id;
 
 		AbstractModel* c = modelList.find(id)->second;
 		// add in checks to make sure no collisions happen or the object goes off the screen
@@ -174,56 +161,57 @@ void Server::handlePacket(ENetPacket* p) {
 		return;
 	}
 
-	/*i = s.find("text");
+	i = s.find("rotate");
 
-	 if (i != -1) {
-	 i += 5;
-	 string tmp = s.substr(i);
+	if (i != -1) {
+		i += 7;
+		string temp = s.substr(i);
 
-	 string::iterator it;
-	 string temp = "";
+		string axis = "";
+		float distance = 0;
+		int id = 0;
 
-	 string text = "";
-	 int id = 0;
+		vector<string> args;
 
-	 bool textDone = false;
-	 bool idDone = false;
+		splitString(temp, args, ",");
 
-	 for (it = tmp.begin(); it != tmp.end(); it++) {
-	 if (*it != ',') {
-	 char c = *it;
-	 //cout << "c is: " << *it << ":" << endl;
-	 temp.append(&c);
-	 } else {
-	 //cout << "temp is: " << temp << endl;
-	 istringstream in;
-	 in >> std::noskipws;
-	 in.str(temp);
+		istringstream in;
+		in.str(args[0]);
+		in >> axis;
 
-	 if (textDone == false) {
-	 text = in.str();
-	 textDone = true;
-	 } else if (idDone == false) {
-	 in >> id;
-	 idDone = true;
-	 }
+		in.clear();
+		in.str(args[1]);
+		in >> distance;
 
-	 temp = "";
-	 }
-	 }
+		in.clear();
+		in.str(args[2]);
+		in >> id;
 
-	 stringstream ss(stringstream::in | stringstream::out);
-	 ss >> std::noskipws;
+		AbstractModel* c = modelList.find(id)->second;
+		// add in checks to make sure no collisions happen or the object goes off the screen
+		if (axis == "x") {
+			c->setAngleX(c->getAngleX() + distance);
+		} else if (axis == "y") {
+			c->setAngleY(c->getAngleY() + distance);
+		} else if (axis == "z") {
+			c->setAngleZ(c->getAngleZ() + distance);
+		}
 
-	 ss << "text," << id << "," << text << ",";
+		sendUpdatedModel(c);
 
-	 ENetPacket* packet = enet_packet_create(ss.str().c_str(), strlen(
-	 ss.str().c_str()) + 1, ENET_PACKET_FLAG_RELIABLE);
+		return;
+	}
 
-	 enet_host_broadcast(server, 0, packet);
+	i = s.find("text");
 
-	 return;
-	 }*/
+	if (i != -1) {
+		ENetPacket* packet = enet_packet_create(ss.str().c_str(), strlen(
+				ss.str().c_str()) + 1, ENET_PACKET_FLAG_RELIABLE);
+
+		enet_host_broadcast(server, 0, packet);
+
+		return;
+	}
 
 }
 
