@@ -1,17 +1,16 @@
 /*
  * wavefrontModel.h
  *
- *  Created on: Sep 13, 2008
- *      Author: metal
+ *  Created on: Sep 16, 2008
+ *      Author: diazr
  */
 
 #ifndef WAVEFRONTMODEL_H_
 #define WAVEFRONTMODEL_H_
 
 #include <vector>
-#include <string>
-#include <SDL/SDL_opengl.h>
-#include "../abstractModel.h"
+
+using std::vector;
 
 typedef struct {
 	float x;
@@ -20,24 +19,43 @@ typedef struct {
 } Vertex;
 
 typedef struct {
+	float i;
+	float j;
+	float k;
+} Normal;
+
+typedef struct{
+	float x;
+	float y;
+	float z;
+} Texture;
+
+typedef struct {
 	int vertex;
+	int texture;
+	int normal;
 } Point;
 
 typedef struct {
-	std::vector<Point> points;
+	vector<Point> points;
 } Face;
 
-class WaveFrontModel: public AbstractModel {
+/**
+ * faces hold a number of points. each point holds the index of the vectors for the vertex, texture and normal.
+ */
+
+class WavefrontModel {
 private:
-	std::vector<Face> faces;
-	std::vector<Vertex> verticies;
+	vector<Vertex> vertices;
+	vector<Normal> normals;
+	vector<Texture> textures;
+	vector<Face> faces;
 public:
-	WaveFrontModel(std::string& s);
-	void addFace(std::vector<int> vertexPos);
 	void addVertex(float x, float y, float z);
+	void addNormal(float i, float j, float k);
+	void addTexture(float x, float y, float z);
+	void addFace(vector<int> vertices, vector<int> textures, vector<int> normals);
 	void draw();
-	std::string serialize();
-	void deserialize(std::string& s);
 };
 
 #endif /* WAVEFRONTMODEL_H_ */

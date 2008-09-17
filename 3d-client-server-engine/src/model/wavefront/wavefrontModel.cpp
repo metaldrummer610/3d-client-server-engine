@@ -1,112 +1,77 @@
 /*
- * wavefrontModel.cpp
+ * wavefrontModel.h
  *
- *  Created on: Sep 13, 2008
- *      Author: metal
+ *  Created on: Sep 16, 2008
+ *      Author: diazr
  */
 
-#include <sstream>
-#include <iostream>
 #include "wavefrontModel.h"
 
-WaveFrontModel::WaveFrontModel(std::string &s) {
-	x = 0.0f;
-	y = 0.0f;
-	z = 0.0f;
-	name = s;
-	//angle = 0.0f;
+void WavefrontModel::addVertex(float x, float y, float z) {
+	Vertex v;
+	v.x = x;
+	v.y = y;
+	v.z = z;
+
+	vertices.push_back(v);
 }
 
-void WaveFrontModel::addFace(std::vector<int> vertexPos) {
-	Point p;
+void WavefrontModel::addNormal(float i, float j, float k) {
+	Normal n;
+	n.i = i;
+	n.j = j;
+	n.k = k;
+
+	normals.push_back(n);
+}
+
+void WavefrontModel::addTexture(float x, float y, float z) {
+	Texture t;
+	t.x = x;
+	t.y = y;
+	t.z = z;
+
+	textures.push_back(t);
+}
+
+void WavefrontModel::addFace(vector<int> vertices, vector<int> textures,
+		vector<int> normals) {
 	Face f;
 
-	std::vector<int>::iterator it;
+	for (int i = 0; i < vertices.size(); i++) {
+		Point p;
 
-	for (it = vertexPos.begin(); it != vertexPos.end(); it++) {
-		p.vertex = *it;
+		p.vertex = vertices.at(i);
+		p.texture = textures.at(i);
+		p.normal = normals.at(i);
+
 		f.points.push_back(p);
 	}
 
 	faces.push_back(f);
 }
 
-void WaveFrontModel::addVertex(float x, float y, float z) {
-	Vertex v;
-	v.x = x;
-	v.y = y;
-	v.z = z;
-
-	verticies.push_back(v);
-}
-
-void WaveFrontModel::draw() {
-	/* Our angle of rotation. */
-
+void WavefrontModel::draw() {
 	glLoadIdentity();
 
-	/* Move down the z-axis. */
-	glTranslatef(x, y, z);
+	vector<Face>::iterator faceit;
+	vector<Point>::iterator pointit;
 
-	std::vector<Face>::iterator faceIt;
-	std::vector<Point>::iterator pointIt;
-
-	glBegin(GL_QUADS);
-	for (faceIt = faces.begin(); faceIt != faces.end(); faceIt++) {
-		for (pointIt = (*faceIt).points.begin(); pointIt != (*faceIt).points.end(); pointIt++) {
-			glVertex3f(
-					verticies.at((*pointIt).vertex - 1).x,
-					verticies.at((*pointIt).vertex - 1).y,
-					verticies.at((*pointIt).vertex - 1).z
-					);
-		}
-	}
-	glEnd();
-
-}
-
-std::string WaveFrontModel::serialize() {
-	std::stringstream ss(std::stringstream::in | std::stringstream::out);
-
-	ss << name << "," << id << "," << x << "," << y << "," << z << ",";
-
-	return ss.str();
-}
-
-void WaveFrontModel::deserialize(std::string& s) {
-	std::string::iterator it;
-	std::string temp;
-	temp = "";
-
-	bool idDone = false;
-	bool xDone = false;
-	bool yDone = false;
-	bool zDone = false;
-
-	for (it = s.begin(); it != s.end(); it++) {
-		if (*it != ',') {
-			char c = *it;
-			//cout << "c is: " << *it << ":" << endl;
-			temp.append(&c);
-		} else {
-			//cout << "temp is: " << temp << endl;
-			std::istringstream in(temp);
-
-			if (idDone == false) {
-				in >> id;
-				idDone = true;
-			} else if (xDone == false) {
-				in >> x;
-				xDone = true;
-			} else if (yDone == false) {
-				in >> y;
-				yDone = true;
-			} else if (zDone == false) {
-				in >> z;
-				zDone = true;
+	for (faceit = faces.begin(); faceit != faces.end(); faceit++) {
+		if (*faceit->points.size() == 4)
+			glBegin(GL_QUADS);
+		else
+			glBegin(TRIANGLE_STRIP);
+		for (pointit = *faceit->points.begin(); pointit
+				!= *faceit->points.end(); pointit++) {
+			if (*pointit->normal != 0) {
+				glNormal3f(normals[*pointit->normal].i,
+						normals[*pointit->normal].j,
+						normals[*pointit->normal].k);
 			}
-
-			temp = "";
+			glVertex3f(vertices[*pointit->vertex].x,
+					vertices[*pointit->vertex].y, vertices[*pointit->vertex].z);
 		}
+		glEnd();
 	}
 }
