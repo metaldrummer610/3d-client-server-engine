@@ -8,11 +8,15 @@ protected:
 	float y;
 	float z;
 	int id;
+
+	float angleX;
+	float angleY;
+	float angleZ;
+
 	std::string name;
 public:
 	virtual void draw() = 0;
 	virtual std::string serialize() = 0;
-	virtual void deserialize(std::string& s) = 0;
 
 	float getX() {return x;}
 	float getY() {return y;}
@@ -25,5 +29,13 @@ public:
 	void setZ(float f) {z = f;}
 	void setId(int i) {id = i;}
 	void setName(std::string s) {name = s;}
+
+	float getAngleX() {return angleX;}
+	float getAngleY() {return angleY;}
+	float getAngleZ() {return angleZ;}
+
+	void setAngleX(float f) {angleX = f;}
+	void setAngleY(float f) {angleY = f;}
+	void setAngleZ(float f) {angleZ = f;}
 };
 #endif

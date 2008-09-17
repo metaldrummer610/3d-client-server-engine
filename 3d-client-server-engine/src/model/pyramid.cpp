@@ -67,45 +67,7 @@ void Pyramid::draw() {
 std::string Pyramid::serialize() {
 	std::stringstream ss(std::stringstream::in | std::stringstream::out);
 
-	ss << "pyramid" << "," << id << "," << x << "," << y << "," << z << ",";
+	ss << "pyramid" << "," << id << "," << x << "," << y << "," << z << "," << angleX << "," << angleY << "," << angleZ << ",";
 
 	return ss.str();
-}
-
-void Pyramid::deserialize(std::string& s) {
-	std::string::iterator it;
-	std::string temp;
-	temp = "";
-
-	bool idDone = false;
-	bool xDone = false;
-	bool yDone = false;
-	bool zDone = false;
-
-	for (it = s.begin(); it != s.end(); it++) {
-		if (*it != ',') {
-			char c = *it;
-			//cout << "c is: " << *it << ":" << endl;
-			temp.append(&c);
-		} else {
-			//cout << "temp is: " << temp << endl;
-			std::istringstream in(temp);
-
-			if (idDone == false) {
-				in >> id;
-				idDone = true;
-			} else if (xDone == false) {
-				in >> x;
-				xDone = true;
-			} else if (yDone == false) {
-				in >> y;
-				yDone = true;
-			} else if (zDone == false) {
-				in >> z;
-				zDone = true;
-			}
-
-			temp = "";
-		}
-	}
 }

@@ -10,6 +10,5 @@ public:
 	Cube();
 	void draw();
 	std::string serialize();
-	void deserialize(std::string& s);
 };
 #endif
