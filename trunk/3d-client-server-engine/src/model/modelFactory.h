@@ -5,11 +5,11 @@
 #include "abstractModel.h"
 #include "cube.h"
 #include "pyramid.h"
-#include "wavefront/loader.h"
+#include "wavefront/wavefrontLoader.h"
 
 class ModelFactory {
 private:
-	Loader l;
+	WavefrontLoader l;
 public:
 	AbstractModel* getModel(std::string s);
 	AbstractModel* getModelByName(std::string name);

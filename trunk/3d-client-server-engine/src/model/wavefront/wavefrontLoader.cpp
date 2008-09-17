@@ -15,8 +15,10 @@
 using std::string;
 using std::vector;
 
-WavefrontModel* WavefrontLoader::load(const char* str) {
+AbstractModel* WavefrontLoader::load(const char* str) {
 	WavefrontModel* m = new WavefrontModel();
+
+	m->setName(str);
 
 	std::ifstream file;
 
@@ -68,8 +70,8 @@ WavefrontModel* WavefrontLoader::load(const char* str) {
 		}
 	}
 
-	//AbstractModel* a = m;
-	return m;
+	AbstractModel* a = m;
+	return a;
 }
 
 void splitString(const string& str, vector<string>& tokens,
@@ -171,7 +173,7 @@ void WavefrontLoader::handleFace(WavefrontModel* m, std::string s) {
 
 				for (int k = 0; k < tmp.size(); k++) {
 
-					std::cout << "// x is " << tmp.at(k) << std::endl;
+					//std::cout << "// x is " << tmp.at(k) << std::endl;
 
 					int f = 0;
 					ss.clear();
@@ -199,7 +201,7 @@ void WavefrontLoader::handleFace(WavefrontModel* m, std::string s) {
 
 				for (int k = 0; k < tmp.size(); k++) {
 
-					std::cout << "// x is " << tmp.at(k) << std::endl;
+					//std::cout << "/ x is " << tmp.at(k) << std::endl;
 
 					int f = 0;
 					ss.clear();
