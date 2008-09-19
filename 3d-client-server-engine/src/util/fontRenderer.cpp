@@ -59,7 +59,7 @@ void FontRenderer::glPrint(int x, int y, const char *fmt, ...) {
 
 	color.r = 255;
 	color.g = 255;
-	color.b = 0;
+	color.b = 255;
 
 	position.x = x;
 	position.y = y;

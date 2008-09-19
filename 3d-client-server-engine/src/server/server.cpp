@@ -7,6 +7,8 @@ using namespace std;
 #include "server.h"
 #include "../util/common.h"
 
+#define SERVER 1
+
 int main(int argc, char ** argv) {
 	Server s = Server();
 
@@ -55,7 +57,7 @@ void Server::deinit() {
 }
 
 void Server::addModelToList(ENetPeer* p) {
-	AbstractModel* a = factory.getModelByName("resources/models/testBox.obj");
+	AbstractModel* a = factory.getModelByName("resources/models/grid.obj");
 	a->setX(0.0f);
 	a->setY(0.2f);
 	a->setZ(-10.3245f);

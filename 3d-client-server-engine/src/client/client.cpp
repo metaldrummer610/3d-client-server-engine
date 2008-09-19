@@ -295,16 +295,16 @@ void Client::handlePacket(ENetPacket *p) {
 		i += 13;
 		string str = s.substr(i);
 
-		AbstractModel* c = modelFactory.getModel(str);
+		vector<string> args;
 
-		AbstractModel* a = modelList[c->getId()];
+		splitString(str, args, ",");
 
-		a->setX(c->getX());
-		a->setY(c->getY());
-		a->setZ(c->getZ());
-		a->setAngleX(c->getAngleX());
-		a->setAngleY(c->getAngleY());
-		a->setAngleZ(c->getAngleZ());
+		int x = 0;
+		istringstream in(args[1]);
+
+		in >> x;
+
+		modelFactory.updateCoords(modelList[x], str);
 
 		return;
 	}
@@ -345,13 +345,7 @@ void Client::handlePacket(ENetPacket *p) {
 		in.str(args[0]);
 		in >> spot;
 
-		in.clear();
-		in.str(args[1]);
-		in >> name;
-
-		AbstractModel* c = modelFactory.getModelByName(name);
-		c = modelList[spot];
-		player = c;
+		player = modelList[spot];
 
 		return;
 	}
