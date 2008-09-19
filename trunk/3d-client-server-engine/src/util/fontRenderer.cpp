@@ -1,7 +1,20 @@
 #include "fontRenderer.h"
 #include <iostream>
+#include <sstream>
 
 FontRenderer::FontRenderer() {
+	properties = fileLoader.loadConfigFile();
+
+	std::istringstream in(properties.find("FONT_COLOR_R")->second);
+	in >> color.r;
+	in.clear();
+
+	in.str(properties.find("FONT_COLOR_G")->second);
+	in >> color.g;
+	in.clear();
+
+	in.str(properties.find("FONT_COLOR_B")->second);
+
 	fontpath = "resources/action_force_normal.ttf";
 	fontSize = 12;
 
@@ -56,10 +69,6 @@ void FontRenderer::glPrint(int x, int y, const char *fmt, ...) {
 
 	glEnable2D();
 	glDisable(GL_DEPTH_TEST);
-
-	color.r = 255;
-	color.g = 255;
-	color.b = 255;
 
 	position.x = x;
 	position.y = y;

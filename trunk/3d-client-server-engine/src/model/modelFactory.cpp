@@ -105,7 +105,7 @@ AbstractModel* ModelFactory::getModelByName(std::string name) {
 	}
 }
 
-void ModelFactory::updateCoords(AbstractModel* m, std::string str) {
+void ModelFactory::updateModel(AbstractModel* m, std::string str) {
 	std::string name;
 	int id;
 	float x;
@@ -153,6 +153,7 @@ void ModelFactory::updateCoords(AbstractModel* m, std::string str) {
 	ss >> angleZ;
 
 	m->setId(id);
+	m->setName(name);
 	m->setX(x);
 	m->setY(y);
 	m->setZ(z);

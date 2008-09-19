@@ -13,6 +13,6 @@ private:
 public:
 	AbstractModel* getModel(std::string s);
 	AbstractModel* getModelByName(std::string name);
-	void updateCoords(AbstractModel* m, std::string str);
+	void updateModel(AbstractModel* m, std::string str);
 };
 #endif
