@@ -17,7 +17,7 @@ AbstractModel* WavefrontLoader::load(const char* str) {
 	WavefrontModel* m = new WavefrontModel();
 
 	m->setName(str);
-
+#ifndef SERVER
 	std::ifstream file;
 
 	file.open(str);
@@ -67,7 +67,7 @@ AbstractModel* WavefrontLoader::load(const char* str) {
 			}
 		}
 	}
-
+#endif
 	AbstractModel* a = m;
 	return a;
 }
