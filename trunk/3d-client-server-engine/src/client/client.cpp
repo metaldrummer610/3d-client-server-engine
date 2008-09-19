@@ -386,115 +386,25 @@ void Client::handlePacket(ENetPacket *p) {
 		return;
 	}
 
-	/*i = s.find("reload");
+	i = s.find("reload");
 
 	if (i != -1) {
 		i += 7;
-		std::string::iterator it;
-		string tmp = s.substr(i);
-		std::cout << temp << endl
-		std::string temp;
-		temp = "";
 
-		std::string name;
-		int id;
-		float x;
-		float y;
-		float z;
+		std::string temp = s.substr(i);
 
-		bool nameDone = false;
-		bool idDone = false;
-		bool xDone = false;
-		bool yDone = false;
-		bool zDone = false;
+		vector<string> args;
 
+		splitString(temp, args, "!");
 
+		for(int i = 0; i < args.size(); i++){
+			AbstractModel* m = modelFactory.getModel(args[i]);
 
-		for (it = tmp.begin(); it != tmp.end(); it++) {
-			if (*it != ',') {
-				char c = *it;
-				//cout << "c is: " << *it << ":" << endl;
-				temp.append(&c);
-			} else {
-				//cout << "temp is: " << temp << endl;
-				std::istringstream in;
-				in.str(temp);
-
-				if (nameDone == false) {
-					in >> name;
-					nameDone = true;
-				} else if (idDone == false) {
-					in >> id;
-					idDone = true;
-				} else if (xDone == false) {
-					in >> x;
-					xDone = true;
-				} else if (yDone == false) {
-					in >> y;
-					yDone = true;
-				} else if (zDone == false) {
-					in >> z;
-					zDone = true;
-				} else if(nameDone == true && idDone == true && xDone == true && yDone == true && zDone == true){
-					map<int, AbstractModel*>::iterator it;
-
-					std::cout << "in last if" << std::endl;
-
-					for (it = modelList.begin(); it != modelList.end(); it++) {
-						if((*it).second->getName().compare(name) == 0){
-							AbstractModel* c = modelFactory.getModelByName(temp);
-							(*it).second = c;
-							(*it).second->setId(c->getId());
-							(*it).second->setX(c->getX());
-							(*it).second->setY(c->getY());
-							(*it).second->setZ(c->getZ());
-
-							std::cout << "id is " << (*it).first << std::endl;
-							if((*it).first == player->getId()){
-								std::cout << "player id is found" << std::endl;
-								player = (*it).second;
-							}
-						}
-					}
-
-					name = "";
-					id = 0;
-					x = 0;
-					y = 0;
-					z = 0;
-
-					nameDone = false;
-					idDone = false;
-					xDone = false;
-					yDone = false;
-					zDone = false;
-				}
-
-				temp = "";
-			}
+			modelList[m->getId()] = m;
 		}
 
-		map<int, AbstractModel*>::iterator it2;
-
-		std::cout << "out of loop" << std::endl;
-
-		for (it2 = modelList.begin(); it2 != modelList.end(); it2++) {
-			std::cout << "name is " << name << std::endl;
-			if((*it2).second->getName().compare(name) == 0){
-				AbstractModel* c = modelFactory.getModelByName(temp);
-				(*it2).second = c;
-				(*it2).second->setId(c->getId());
-				(*it2).second->setX(c->getX());
-				(*it2).second->setY(c->getY());
-				(*it2).second->setZ(c->getZ());
-
-				std::cout << "id is " << (*it2).first << std::endl;
-				if((*it2).first == player->getId()){
-					std::cout << "player id is found" << std::endl;
-					player = (*it2).second;
-				}
-			}
-		}}*/
+		player = modelList[player->getId()];
+	}
 }
 
 /* function to reset our viewport after a window resize */
@@ -589,28 +499,28 @@ void Client::handleKeyPress(SDL_keysym *keysym) {
 
 		// rotates the model
 	case SDLK_u:
-		sendPacket("rotate,y,0.125");
-		player->setAngleY(player->getAngleY() + 0.125f);
+		sendPacket("rotate,y,1");
+		player->setAngleY(player->getAngleY() + 1);
 		break;
 	case SDLK_h:
-		sendPacket("rotate,x,-0.125");
-		player->setAngleX(player->getAngleX() - 0.125f);
+		sendPacket("rotate,x,-1");
+		player->setAngleX(player->getAngleX() - 1);
 		break;
 	case SDLK_j:
-		sendPacket("rotate,y,-0.125");
-		player->setAngleY(player->getAngleY() - 0.125f);
+		sendPacket("rotate,y,-1");
+		player->setAngleY(player->getAngleY() - 1);
 		break;
 	case SDLK_k:
-		sendPacket("rotate,x,0.125");
-		player->setAngleX(player->getAngleX() + 0.125f);
+		sendPacket("rotate,x,1");
+		player->setAngleX(player->getAngleX() + 1);
 		break;
 	case SDLK_y:
-		sendPacket("rotate,z,-0.125");
-		player->setAngleZ(player->getAngleZ() - 0.125f);
+		sendPacket("rotate,z,-1");
+		player->setAngleZ(player->getAngleZ() - 1);
 		break;
 	case SDLK_i:
-		sendPacket("rotate,z,0.125");
-		player->setAngleZ(player->getAngleZ() + 0.125f);
+		sendPacket("rotate,z,1");
+		player->setAngleZ(player->getAngleZ() + 1);
 		break;
 
 	case SDLK_UP:
@@ -679,7 +589,7 @@ void Client::mainLoop() {
 
 			case ENET_EVENT_TYPE_RECEIVE:
 				handlePacket(event.packet);
-				cout << "event data " << event.packet->data << endl;
+				//cout << "event data " << event.packet->data << endl;
 
 				/* Clean up the packet now that we're done using it. */
 				enet_packet_destroy(event.packet);
