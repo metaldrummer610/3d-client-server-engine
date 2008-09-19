@@ -55,10 +55,10 @@ void Server::deinit() {
 }
 
 void Server::addModelToList(ENetPeer* p) {
-	AbstractModel* a = factory.getModelByName("resources/models/grid.obj");
-	a->setX(-9.0f);
-	a->setY(5.2f);
-	a->setZ(-23.3245f);
+	AbstractModel* a = factory.getModelByName("resources/models/testBox.obj");
+	a->setX(0.0f);
+	a->setY(0.2f);
+	a->setZ(-10.3245f);
 	a->setId((int&) p->data);
 	modelList.insert(pair<int, AbstractModel*> (a->getId(), a));
 }
@@ -101,7 +101,7 @@ void Server::loadChangedModels(){
 	ss << "reload,";
 
 	for(it = modelList.begin(); it != modelList.end(); it++){
-		ss << (*it).second->serialize();
+		ss << (*it).second->serialize() << "!";
 	}
 
 	 ENetPacket* packet = enet_packet_create(ss.str().c_str(), strlen(
@@ -212,7 +212,6 @@ void Server::handlePacket(ENetPacket* p) {
 
 		return;
 	}
-
 }
 
 void Server::sendUpdatedModel(AbstractModel* m) {
@@ -260,10 +259,10 @@ void Server::mainLoop() {
 				break;
 
 			case ENET_EVENT_TYPE_RECEIVE:
-				cout << "A packet of length " << event.packet->dataLength
-						<< " containing " << event.packet->data
-						<< " was received from " << event.peer->data
-						<< " on channel " << event.channelID << "." << endl;
+				//cout << "A packet of length " << event.packet->dataLength
+				//		<< " containing " << event.packet->data
+				//		<< " was received from " << event.peer->data
+				//		<< " on channel " << event.channelID << "." << endl;
 				/* Clean up the packet now that we're done using it. */
 				handlePacket(event.packet);
 				enet_packet_destroy(event.packet);
@@ -282,7 +281,6 @@ void Server::mainLoop() {
 		int t = SDL_GetTicks();
 		if (t - T0 >= 10000) {
 			T0 = t;
-
 			loadChangedModels();
 		}
 	}
