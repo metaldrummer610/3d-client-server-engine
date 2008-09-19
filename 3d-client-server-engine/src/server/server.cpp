@@ -57,7 +57,7 @@ void Server::deinit() {
 }
 
 void Server::addModelToList(ENetPeer* p) {
-	AbstractModel* a = factory.getModelByName("resources/models/grid.obj");
+	AbstractModel* a = factory.getModelByName("resources/models/box.obj");
 	a->setX(0.0f);
 	a->setY(0.2f);
 	a->setZ(-10.3245f);
@@ -200,6 +200,41 @@ void Server::handlePacket(ENetPacket* p) {
 		}
 
 		sendUpdatedModel(c);
+
+		return;
+	}
+
+	i = s.find("changePlayer");
+
+	if (i != -1) {
+		//resources/models/box.obj,resources/models/box.obj,1,0,0.2,-10.3245,7.00649e-43,2.24208e-41,0,,1,
+		i += 13;
+		string temp = s.substr(i);
+
+		int id = 0;
+
+		vector<string> args;
+
+		splitString(temp, args, ",");
+
+		istringstream in;
+		string idStr;
+		in.str(args.back());
+		in >> id;
+		in >> idStr;
+		in.clear();
+
+		string name;
+		in.str(args[0]);
+		in >> name;
+
+		temp = s.substr(name.size() + 1, s.size() - idStr.size());
+
+		cout << temp << endl;
+
+		factory.updateModel(modelList.find(id)->second, temp);
+
+		sendUpdatedModel(modelList.find(id)->second);
 
 		return;
 	}

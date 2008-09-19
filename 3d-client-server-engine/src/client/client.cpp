@@ -153,7 +153,7 @@ void Client::sdl_openglInit(int width, int height) {
 	glEnable(GL_CULL_FACE);
 
 	/* Set the clear color. */
-	glClearColor(0, 0, 0, 1.0f);
+	glClearColor(0.5, 0.5, 0.5, 0);
 
 	/* Setup our viewport. */
 	glViewport(0, 0, width, height);
@@ -210,8 +210,12 @@ void Client::render() {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
+	glDisable(GL_LIGHTING);
+
 	getFPS();
 	displayEvents();
+
+	glEnable(GL_LIGHTING);
 
 	glLoadIdentity();
 
@@ -304,7 +308,7 @@ void Client::handlePacket(ENetPacket *p) {
 
 		in >> x;
 
-		modelFactory.updateCoords(modelList[x], str);
+		modelFactory.updateModel(modelList[x], str);
 
 		return;
 	}
@@ -449,13 +453,6 @@ void Client::handleKeyPress(SDL_keysym *keysym) {
 		deinit();
 		exit(EXIT_FAILURE);
 		break;
-		// taken out because the full screen doesn't work
-		//case SDLK_F1:
-		/* F1 key was pressed
-		 * this toggles fullscreen mode
-		 */
-		//	SDL_WM_ToggleFullScreen(screen);
-		//	break;
 	case SDLK_TAB:
 		if (!renderFPS)
 			renderFPS = true;
@@ -523,6 +520,30 @@ void Client::handleKeyPress(SDL_keysym *keysym) {
 	case SDLK_DOWN:
 		fontFactory.setFontSize(fontFactory.getFontSize() - 1);
 		break;
+
+	// box.obj  grid.obj  ILOVELAMP.obj  sample2.obj  shape.obj  sphere.obj  testBox.obj
+	case SDLK_2:
+		sendPacket("changePlayer,resources/models/box.obj," + player->serialize());
+		break;
+	case SDLK_3:
+		sendPacket("changePlayer,resources/models/grid.obj," + player->serialize());
+		break;
+	case SDLK_4:
+		sendPacket("changePlayer,resources/models/ILOVELAMP.obj," + player->serialize());
+		break;
+	case SDLK_5:
+		sendPacket("changePlayer,resources/models/sample2.obj," + player->serialize());
+		break;
+	case SDLK_6:
+		sendPacket("changePlayer,resources/models/shape.obj," + player->serialize());
+		break;
+	case SDLK_7:
+		sendPacket("changePlayer,resources/models/sphere.obj," + player->serialize());
+		break;
+	case SDLK_8:
+		sendPacket("changePlayer,resources/models/testBox.obj," + player->serialize());
+		break;
+
 	default:
 		break;
 	}
@@ -535,17 +556,6 @@ void Client::processSdlEvents() {
 
 	while (SDL_PollEvent(&sdlEvent)) {
 		switch (sdlEvent.type) {
-		/*case SDL_ACTIVEEVENT:
-		 Something's happend with our focus
-		 * If we lost focus or we are iconified, we
-		 * shouldn't draw the screen
-
-		 if (sdlEvent.active.gain == 0) {
-		 isActive = false;
-		 } else {
-		 isActive = true;
-		 }
-		 break;*/
 		case SDL_KEYDOWN:
 			/* handle key presses */
 			handleKeyPress(&sdlEvent.key.keysym);
@@ -557,8 +567,6 @@ void Client::processSdlEvents() {
 		}
 	}
 
-	/* draw the scene */
-	//if (isActive)
 	render();
 
 }

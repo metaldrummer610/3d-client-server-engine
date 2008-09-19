@@ -8,6 +8,7 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_ttf.h>
 #include <SDL/SDL_opengl.h>
+#include "fileLoader.h"
 
 class FontRenderer {
 private:
@@ -21,6 +22,9 @@ private:
 	SDL_Color color;
 	SDL_Rect position;
 	std::string fontpath;
+
+	FileLoader fileLoader;
+	std::map<std::string, std::string> properties;
 public:
 	FontRenderer();
 	~FontRenderer();
