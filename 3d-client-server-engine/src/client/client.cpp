@@ -124,7 +124,6 @@ void Client::sdl_openglInit(int width, int height) {
 
 	float ratio = (float) width / (float) height;
 
-	// Somewhere in the initialization part of your program…
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
 
@@ -136,8 +135,8 @@ void Client::sdl_openglInit(int width, int height) {
 
 	// Assign created components to GL_LIGHT0
 	glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLight);
-	//glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseLight);
-	//glLightfv(GL_LIGHT0, GL_SPECULAR, specularLight);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseLight);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, specularLight);
 	glLightfv(GL_LIGHT0, GL_POSITION, position);
 
 	/* Our shading model--Gouraud (smooth). */
@@ -395,7 +394,7 @@ void Client::handlePacket(ENetPacket *p) {
 
 		splitString(temp, args, "!");
 
-		for(int i = 0; i < args.size(); i++){
+		for (int i = 0; i < args.size(); i++) {
 			AbstractModel* m = modelFactory.getModel(args[i]);
 
 			modelList[m->getId()] = m;
@@ -521,27 +520,34 @@ void Client::handleKeyPress(SDL_keysym *keysym) {
 		fontFactory.setFontSize(fontFactory.getFontSize() - 1);
 		break;
 
-	// box.obj  grid.obj  ILOVELAMP.obj  sample2.obj  shape.obj  sphere.obj  testBox.obj
+		// box.obj  grid.obj  ILOVELAMP.obj  sample2.obj  shape.obj  sphere.obj  testBox.obj
 	case SDLK_2:
-		sendPacket("changePlayer,resources/models/box.obj," + player->serialize());
+		sendPacket("changePlayer,resources/models/box.obj,"
+				+ player->serialize());
 		break;
 	case SDLK_3:
-		sendPacket("changePlayer,resources/models/grid.obj," + player->serialize());
+		sendPacket("changePlayer,resources/models/grid.obj,"
+				+ player->serialize());
 		break;
 	case SDLK_4:
-		sendPacket("changePlayer,resources/models/ILOVELAMP.obj," + player->serialize());
+		sendPacket("changePlayer,resources/models/monkey1.obj,"
+				+ player->serialize());
 		break;
 	case SDLK_5:
-		sendPacket("changePlayer,resources/models/sample2.obj," + player->serialize());
+		sendPacket("changePlayer,resources/models/sample2.obj,"
+				+ player->serialize());
 		break;
 	case SDLK_6:
-		sendPacket("changePlayer,resources/models/shape.obj," + player->serialize());
+		sendPacket("changePlayer,resources/models/monkey2.obj,"
+				+ player->serialize());
 		break;
 	case SDLK_7:
-		sendPacket("changePlayer,resources/models/sphere.obj," + player->serialize());
+		sendPacket("changePlayer,resources/models/sphere.obj,"
+				+ player->serialize());
 		break;
 	case SDLK_8:
-		sendPacket("changePlayer,resources/models/testBox.obj," + player->serialize());
+		sendPacket("changePlayer,resources/models/testBox.obj,"
+				+ player->serialize());
 		break;
 
 	default:

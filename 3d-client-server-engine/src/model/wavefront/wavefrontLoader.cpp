@@ -68,6 +68,8 @@ AbstractModel* WavefrontLoader::load(const char* str) {
 		}
 	}
 #endif
+	//m->print();
+
 	AbstractModel* a = m;
 	return a;
 }
@@ -161,10 +163,13 @@ void WavefrontLoader::handleFace(WavefrontModel* m, std::string s) {
 					ss.str(tmp.at(k));
 					ss >> f;
 					vertices.push_back(f);
+
+					k++;
 					ss.clear();
 					ss.str(tmp.at(k));
 					ss >> f;
 					normals.push_back(f);
+
 					textures.push_back(0);
 				}
 			}
@@ -189,14 +194,19 @@ void WavefrontLoader::handleFace(WavefrontModel* m, std::string s) {
 					ss.str(tmp.at(k));
 					ss >> f;
 					vertices.push_back(f);
-					ss.clear();
-					ss.str(tmp.at(k));
-					ss >> f;
-					normals.push_back(f);
+					k++;
+
 					ss.clear();
 					ss.str(tmp.at(k));
 					ss >> f;
 					textures.push_back(f);
+					k++;
+
+					ss.clear();
+					ss.str(tmp.at(k));
+					ss >> f;
+					normals.push_back(f);
+
 				}
 			}
 		}
