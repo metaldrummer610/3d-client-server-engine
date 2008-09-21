@@ -8,6 +8,8 @@
 #include <SDL/SDL_opengl.h>
 #include <sstream>
 #include "wavefrontModel.h"
+#include <iostream>
+using namespace std;
 
 void WavefrontModel::addVertex(float x, float y, float z) {
 	Vertex v;
@@ -78,7 +80,8 @@ void WavefrontModel::draw() {
 						normals[(*pointit).normal].k);
 			}
 			glVertex3f(vertices[(*pointit).vertex].x,
-					vertices[(*pointit).vertex].y, vertices[(*pointit).vertex].z);
+					vertices[(*pointit).vertex].y,
+					vertices[(*pointit).vertex].z);
 		}
 		glEnd();
 	}
@@ -87,7 +90,37 @@ void WavefrontModel::draw() {
 std::string WavefrontModel::serialize() {
 	std::stringstream ss(std::stringstream::in | std::stringstream::out);
 
-	ss << name << "," << id << "," << x << "," << y << "," << z << "," << angleX << "," << angleY << "," << angleZ << ",";
+	ss << name << "," << id << "," << x << "," << y << "," << z << ","
+			<< angleX << "," << angleY << "," << angleZ << ",";
 
 	return ss.str();
+}
+
+void WavefrontModel::print() {
+	vector<Vertex>::iterator vertit;
+	vector<Normal>::iterator normit;
+	vector<Point>::iterator pointit;
+	vector<Face>::iterator faceit;
+
+	for (vertit = vertices.begin(); vertit != vertices.end(); vertit++) {
+		cout << "v " << (*vertit).x << " " << (*vertit).y << " " << (*vertit).z
+				<< endl;
+	}
+
+	for (normit = normals.begin(); normit != normals.end(); normit++) {
+		cout << "vn " << (*normit).i << " " << (*normit).j << " "
+				<< (*normit).k << endl;
+	}
+
+	for (faceit = faces.begin(); faceit != faces.end(); faceit++) {
+		cout << "f ";
+
+		for (pointit = (*faceit).points.begin(); pointit
+				!= (*faceit).points.end(); pointit++) {
+			cout << (*pointit).vertex << "/" << (*pointit).texture
+					<< "/" << (*pointit).normal << " ";
+		}
+
+		cout << endl;
+	}
 }

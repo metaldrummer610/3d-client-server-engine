@@ -57,7 +57,7 @@ void Server::deinit() {
 }
 
 void Server::addModelToList(ENetPeer* p) {
-	AbstractModel* a = factory.getModelByName("resources/models/box.obj");
+	AbstractModel* a = factory.getModelByName("resources/models/shape.obj");
 	a->setX(0.0f);
 	a->setY(0.2f);
 	a->setZ(-10.3245f);
@@ -95,21 +95,21 @@ void Server::sendModels(ENetPeer *p) {
 	}
 }
 
-void Server::loadChangedModels(){
+void Server::loadChangedModels() {
 	stringstream ss(stringstream::in | stringstream::out);
 
 	std::map<int, AbstractModel*>::iterator it;
 
 	ss << "reload,";
 
-	for(it = modelList.begin(); it != modelList.end(); it++){
+	for (it = modelList.begin(); it != modelList.end(); it++) {
 		ss << (*it).second->serialize() << "!";
 	}
 
-	 ENetPacket* packet = enet_packet_create(ss.str().c_str(), strlen(
-			 ss.str().c_str()) + 1, ENET_PACKET_FLAG_RELIABLE);
+	ENetPacket* packet = enet_packet_create(ss.str().c_str(), strlen(
+			ss.str().c_str()) + 1, ENET_PACKET_FLAG_RELIABLE);
 
-	 enet_host_broadcast(server, 0, packet);
+	enet_host_broadcast(server, 0, packet);
 }
 
 void Server::handlePacket(ENetPacket* p) {
@@ -207,32 +207,34 @@ void Server::handlePacket(ENetPacket* p) {
 	i = s.find("changePlayer");
 
 	if (i != -1) {
-		//resources/models/box.obj,resources/models/box.obj,1,0,0.2,-10.3245,7.00649e-43,2.24208e-41,0,,1,
 		i += 13;
-		string temp = s.substr(i);
+		string masterStr = s.substr(i);
 
 		int id = 0;
+		string returnStr = "";
 
 		vector<string> args;
 
-		splitString(temp, args, ",");
+		splitString(masterStr, args, ",");
 
-		istringstream in;
-		string idStr;
+		args.erase(args.begin() + 1);
+		args.erase(args.end());
+
+		vector<string>::iterator it;
+
+		stringstream in;
+
+		for (it = args.begin(); it != args.end(); it++) {
+			in << *it << ",";
+		}
+
+		in >> returnStr;
+
+		in.clear();
 		in.str(args.back());
 		in >> id;
-		in >> idStr;
-		in.clear();
 
-		string name;
-		in.str(args[0]);
-		in >> name;
-
-		temp = s.substr(name.size() + 1, s.size() - idStr.size());
-
-		cout << temp << endl;
-
-		factory.updateModel(modelList.find(id)->second, temp);
+		factory.updateModel(modelList.find(id)->second, returnStr);
 
 		sendUpdatedModel(modelList.find(id)->second);
 
