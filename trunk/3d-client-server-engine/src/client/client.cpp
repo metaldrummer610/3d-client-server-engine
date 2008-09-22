@@ -23,6 +23,7 @@ void Client::init() {
 	seconds = 0;
 	fps = 0;
 	renderFPS = false;
+	lightOn = true;
 
 	/////////////////////
 	// load up config file and set properties
@@ -366,14 +367,9 @@ void Client::handlePacket(ENetPacket *p) {
 
 		splitString(tmp, args, ",");
 
+		text = args[0];
+
 		istringstream in;
-		in >> std::noskipws;
-		in.str(args[0]);
-		in >> text;
-
-		cout << in.str() << endl;
-
-		in.clear();
 		in.str(args[1]);
 		in >> id;
 
@@ -522,7 +518,7 @@ void Client::handleKeyPress(SDL_keysym *keysym) {
 
 		// box.obj  grid.obj  ILOVELAMP.obj  sample2.obj  shape.obj  sphere.obj  testBox.obj
 	case SDLK_2:
-		sendPacket("changePlayer,resources/models/box.obj,"
+		sendPacket("changePlayer,resources/models/blob.obj,"
 				+ player->serialize());
 		break;
 	case SDLK_3:
@@ -548,6 +544,20 @@ void Client::handleKeyPress(SDL_keysym *keysym) {
 	case SDLK_8:
 		sendPacket("changePlayer,resources/models/testBox.obj,"
 				+ player->serialize());
+		break;
+
+	case SDLK_l:
+		if (!lightOn) {
+			lightOn = true;
+			glEnable(GL_LIGHTING);
+			glEnable(GL_LIGHT0);
+			addEventToStack("Light on");
+		} else {
+			lightOn = false;
+			glDisable(GL_LIGHTING);
+			glDisable(GL_LIGHT0);
+			addEventToStack("Light off");
+		}
 		break;
 
 	default:
