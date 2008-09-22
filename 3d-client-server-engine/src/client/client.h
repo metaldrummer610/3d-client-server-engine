@@ -37,6 +37,7 @@ private:
 	GLfloat seconds;
 	GLfloat fps;
 	bool renderFPS;
+	bool lightOn;
 
 	FileLoader fileLoader;
 	std::map<std::string, std::string> properties;
