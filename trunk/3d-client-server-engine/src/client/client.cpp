@@ -185,16 +185,14 @@ void Client::deinit() {
 	enet_host_destroy(client);
 }
 
-void Client::addEventToStack(std::string x, ...) {
+void Client::addEventToStack(const char* x, ...) {
 	char text[256]; /* Holds our string */
 	va_list ap; /* Pointer to our list of elements */
 
-	const char* tmp = x.c_str();
-
 	/* Parses The String For Variables */
-	va_start(ap, tmp);
+	va_start(ap, x);
 	/* Converts Symbols To Actual Numbers */
-	vsprintf(text, tmp, ap);
+	vsprintf(text, x, ap);
 	va_end(ap);
 
 	std::string s(text);
@@ -215,9 +213,19 @@ void Client::render() {
 	getFPS();
 	displayEvents();
 
+	int i = fontFactory.getFontSize() + 5;
+
+	fontFactory.glPrint(0, SCREEN_HEIGHT - i, "x: %f", player->getX());
+	fontFactory.glPrint(0, SCREEN_HEIGHT - i*2, "y: %f", player->getY());
+	fontFactory.glPrint(0, SCREEN_HEIGHT - i*3, "z: %f", player->getZ());
+
 	glEnable(GL_LIGHTING);
 
 	glLoadIdentity();
+
+	gluLookAt(10.0f, 0.0f, 0.0f,
+			player->getX(), player->getY(), player->getZ(),
+			0.0, 0.0, 1.0);
 
 	map<int, AbstractModel*>::iterator it;
 
