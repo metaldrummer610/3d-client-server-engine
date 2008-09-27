@@ -44,7 +44,7 @@ private:
 
 	void getFPS();
 
-	void addEventToStack(std::string x, ...);
+	void addEventToStack(const char* x, ...);
 	void displayEvents();
 
 public:
