@@ -47,6 +47,11 @@ private:
 	void addEventToStack(const char* x, ...);
 	void displayEvents();
 
+	float cameraAngle;
+	float cameraRadians;
+
+	float cameraX, cameraY, cameraZ;
+
 public:
 	void init();
 	void deinit();
