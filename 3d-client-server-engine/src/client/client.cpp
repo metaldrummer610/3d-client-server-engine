@@ -1,11 +1,15 @@
 #include <enet/enet.h>
 #include <iostream>
 #include <sstream>
+#include <math.h>
+#include <stdlib.h>
 using namespace std;
 
 #include "client.h"
 #include "../model/modelFactory.h"
 #include "../util/common.h"
+
+#define PI 3.14159
 
 int main(int argv, char** argc) {
 	Client c = Client();
@@ -24,6 +28,11 @@ void Client::init() {
 	fps = 0;
 	renderFPS = false;
 	lightOn = true;
+
+	cameraAngle = 0;
+	cameraRadians = 0;
+
+	cameraX = cameraY = cameraZ = 0;
 
 	/////////////////////
 	// load up config file and set properties
@@ -208,6 +217,15 @@ void Client::render() {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
+	// calculate the coordinates for the camera
+	cameraRadians = (PI * (cameraAngle - 90.0f) / 180.0f);
+	/*cameraX = player->getX() + sin(cameraRadians);
+	 cameraZ = player->getZ() + cos(cameraRadians);*/
+	cameraX = player->getX() + cameraRadians;
+	cameraZ = player->getZ() + cameraRadians;
+
+	cameraY = player->getY();// / 2.0f;
+
 	glDisable(GL_LIGHTING);
 
 	getFPS();
@@ -216,21 +234,39 @@ void Client::render() {
 	int i = fontFactory.getFontSize() + 5;
 
 	fontFactory.glPrint(0, SCREEN_HEIGHT - i, "x: %f", player->getX());
-	fontFactory.glPrint(0, SCREEN_HEIGHT - i*2, "y: %f", player->getY());
-	fontFactory.glPrint(0, SCREEN_HEIGHT - i*3, "z: %f", player->getZ());
+	fontFactory.glPrint(0, SCREEN_HEIGHT - i * 2, "y: %f", player->getY());
+	fontFactory.glPrint(0, SCREEN_HEIGHT - i * 3, "z: %f", player->getZ());
+
+	fontFactory.glPrint(0, SCREEN_HEIGHT - i * 4, "x: %f", cameraX);
+	fontFactory.glPrint(0, SCREEN_HEIGHT - i * 5, "y: %f", cameraY);
+	fontFactory.glPrint(0, SCREEN_HEIGHT - i * 6, "z: %f", cameraZ);
 
 	glEnable(GL_LIGHTING);
 
 	glLoadIdentity();
 
-	gluLookAt(10.0f, 0.0f, 0.0f,
-			player->getX(), player->getY(), player->getZ(),
-			0.0, 0.0, 1.0);
+	/*	//gluLookAt(10.0f, 0.0f, 0.0f,
+	 //			player->getX(), player->getY(),
+	 //			player->getZ(), 0.0, 0.0, 1.0);
+	 */
+	gluLookAt(cameraX, cameraY, cameraZ, player->getX(), player->getY(),
+			player->getZ() + 15, 0, 1, 0);
+
+	glRotatef(player->getAngleX(), 1, 0, 0);
+	glRotatef(player->getAngleY(), 0, 1, 0);
+	glRotatef(player->getAngleZ(), 0, 0, 1);
+
+	//glTranslatef(player->getX(), player->getY(), player->getZ() + 15);
+
+
+	player->draw();
 
 	map<int, AbstractModel*>::iterator it;
 
 	for (it = modelList.begin(); it != modelList.end(); it++) {
-		(*it).second->draw();
+		glLoadIdentity();
+		if ((*it).second->getId() != player->getId())
+			(*it).second->draw();
 	}
 
 	glFlush();

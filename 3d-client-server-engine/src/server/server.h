@@ -17,6 +17,7 @@ private:
 	int peerNumber;
 
 	void loadChangedModels();
+	void addBackground();
 
 public:
 	void init();

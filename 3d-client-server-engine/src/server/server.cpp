@@ -56,11 +56,27 @@ void Server::deinit() {
 	delete &modelList;
 }
 
+void Server::addBackground() {
+	AbstractModel* a = factory.getModelByName("resources/models/sample2.obj");
+	a->setX(-10);
+	a->setY(-10);
+	a->setZ(0);
+	a->setId(peerNumber++);
+	modelList.insert(pair<int, AbstractModel*> (a->getId(), a));
+
+	AbstractModel* b = factory.getModelByName("resources/models/sample2.obj");
+	b->setX(10);
+	b->setY(10);
+	b->setZ(0);
+	b->setId(peerNumber++);
+	modelList.insert(pair<int, AbstractModel*> (b->getId(), b));
+}
+
 void Server::addModelToList(ENetPeer* p) {
 	AbstractModel* a = factory.getModelByName("resources/models/box.obj");
-	a->setX(0.0f);
-	a->setY(0.2f);
-	a->setZ(-10.3245f);
+	a->setX(0);
+	a->setY(0);
+	a->setZ(0);
 	a->setId((int&) p->data);
 	modelList.insert(pair<int, AbstractModel*> (a->getId(), a));
 }
@@ -281,6 +297,8 @@ void Server::mainLoop() {
 	ENetEvent event;
 
 	int T0 = 0;
+
+	addBackground();
 
 	while (true) {
 		/* Wait up to 1000 milliseconds for an event. */

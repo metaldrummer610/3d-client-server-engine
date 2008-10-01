@@ -56,7 +56,7 @@ void WavefrontModel::addFace(vector<int> vertices, vector<int> textures,
 }
 
 void WavefrontModel::draw() {
-	glLoadIdentity();
+	//glLoadIdentity();
 
 	glTranslatef(x, y, z);
 
