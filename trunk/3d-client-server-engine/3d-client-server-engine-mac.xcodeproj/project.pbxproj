@@ -1,0 +1,512 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 42;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		DCAFD2AE102C6A4800DCBC84 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCAFD2AD102C6A4800DCBC84 /* OpenGL.framework */; };
+		DCAFD2B0102C6A4800DCBC84 /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCAFD2AF102C6A4800DCBC84 /* SDL.framework */; };
+		DCAFD2B2102C6A4800DCBC84 /* SDL_ttf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCAFD2B1102C6A4800DCBC84 /* SDL_ttf.framework */; };
+		DCAFD30C102C6A9F00DCBC84 /* client.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DCAFD2EF102C6A9F00DCBC84 /* client.cpp */; };
+		DCAFD30D102C6A9F00DCBC84 /* cube.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DCAFD2F3102C6A9F00DCBC84 /* cube.cpp */; };
+		DCAFD30F102C6A9F00DCBC84 /* modelFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DCAFD2F7102C6A9F00DCBC84 /* modelFactory.cpp */; };
+		DCAFD310102C6A9F00DCBC84 /* pyramid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DCAFD2F9102C6A9F00DCBC84 /* pyramid.cpp */; };
+		DCAFD311102C6A9F00DCBC84 /* wavefrontLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DCAFD2FC102C6A9F00DCBC84 /* wavefrontLoader.cpp */; };
+		DCAFD312102C6A9F00DCBC84 /* wavefrontModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DCAFD2FE102C6A9F00DCBC84 /* wavefrontModel.cpp */; };
+		DCAFD314102C6A9F00DCBC84 /* common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DCAFD304102C6A9F00DCBC84 /* common.cpp */; };
+		DCAFD315102C6A9F00DCBC84 /* fileLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DCAFD308102C6A9F00DCBC84 /* fileLoader.cpp */; };
+		DCAFD316102C6A9F00DCBC84 /* fontRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DCAFD30A102C6A9F00DCBC84 /* fontRenderer.cpp */; };
+		DCAFD318102C6A9F00DCBC84 /* cube.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DCAFD2F3102C6A9F00DCBC84 /* cube.cpp */; };
+		DCAFD31A102C6A9F00DCBC84 /* modelFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DCAFD2F7102C6A9F00DCBC84 /* modelFactory.cpp */; };
+		DCAFD31B102C6A9F00DCBC84 /* pyramid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DCAFD2F9102C6A9F00DCBC84 /* pyramid.cpp */; };
+		DCAFD31C102C6A9F00DCBC84 /* wavefrontLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DCAFD2FC102C6A9F00DCBC84 /* wavefrontLoader.cpp */; };
+		DCAFD31D102C6A9F00DCBC84 /* wavefrontModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DCAFD2FE102C6A9F00DCBC84 /* wavefrontModel.cpp */; };
+		DCAFD31E102C6A9F00DCBC84 /* server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DCAFD301102C6A9F00DCBC84 /* server.cpp */; };
+		DCAFD31F102C6A9F00DCBC84 /* common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DCAFD304102C6A9F00DCBC84 /* common.cpp */; };
+		DCAFD320102C6A9F00DCBC84 /* fileLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DCAFD308102C6A9F00DCBC84 /* fileLoader.cpp */; };
+		DCAFD321102C6A9F00DCBC84 /* fontRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DCAFD30A102C6A9F00DCBC84 /* fontRenderer.cpp */; };
+		DCAFD32C102C6B6F00DCBC84 /* libstdc++.6.0.9.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DCAFD32B102C6B6F00DCBC84 /* libstdc++.6.0.9.dylib */; };
+		DCAFD32D102C6B7700DCBC84 /* libstdc++.6.0.9.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DCAFD32B102C6B6F00DCBC84 /* libstdc++.6.0.9.dylib */; };
+		DCAFD348102C6EBA00DCBC84 /* SDLMain.m in Sources */ = {isa = PBXBuildFile; fileRef = DCAFD346102C6EBA00DCBC84 /* SDLMain.m */; };
+		DCAFD352102C6F8000DCBC84 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCAFD351102C6F8000DCBC84 /* GLUT.framework */; };
+		DCAFD366102C6F9100DCBC84 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCAFD2AD102C6A4800DCBC84 /* OpenGL.framework */; };
+		DCAFD367102C6F9100DCBC84 /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCAFD2AF102C6A4800DCBC84 /* SDL.framework */; };
+		DCAFD368102C6F9100DCBC84 /* SDL_ttf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCAFD2B1102C6A4800DCBC84 /* SDL_ttf.framework */; };
+		DCAFD36A102C6F9400DCBC84 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCAFD351102C6F8000DCBC84 /* GLUT.framework */; };
+		DCAFD379102C6FC000DCBC84 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCAFD378102C6FC000DCBC84 /* Cocoa.framework */; };
+		DCAFD37B102C6FC000DCBC84 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCAFD37A102C6FC000DCBC84 /* Foundation.framework */; };
+		DCAFD3FB102C6FC500DCBC84 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCAFD378102C6FC000DCBC84 /* Cocoa.framework */; };
+		DCAFD3FC102C6FC500DCBC84 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCAFD37A102C6FC000DCBC84 /* Foundation.framework */; };
+		DCAFD401102C701500DCBC84 /* SDLMain.m in Sources */ = {isa = PBXBuildFile; fileRef = DCAFD346102C6EBA00DCBC84 /* SDLMain.m */; };
+		DCAFD598102C88B300DCBC84 /* libenet.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DCAFD597102C88B300DCBC84 /* libenet.dylib */; };
+		DCAFD599102C88B300DCBC84 /* libenet.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DCAFD597102C88B300DCBC84 /* libenet.dylib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		DCAFD2A7102C6A0900DCBC84 /* client */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = client; sourceTree = BUILT_PRODUCTS_DIR; };
+		DCAFD2AD102C6A4800DCBC84 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
+		DCAFD2AF102C6A4800DCBC84 /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = /Library/Frameworks/SDL.framework; sourceTree = "<absolute>"; };
+		DCAFD2B1102C6A4800DCBC84 /* SDL_ttf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_ttf.framework; path = /Library/Frameworks/SDL_ttf.framework; sourceTree = "<absolute>"; };
+		DCAFD2BC102C6A6400DCBC84 /* server */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = server; sourceTree = BUILT_PRODUCTS_DIR; };
+		DCAFD2EF102C6A9F00DCBC84 /* client.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = client.cpp; path = src/client/client.cpp; sourceTree = SOURCE_ROOT; };
+		DCAFD2F0102C6A9F00DCBC84 /* client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = client.h; path = src/client/client.h; sourceTree = SOURCE_ROOT; };
+		DCAFD2F2102C6A9F00DCBC84 /* abstractModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = abstractModel.h; path = src/model/abstractModel.h; sourceTree = SOURCE_ROOT; };
+		DCAFD2F3102C6A9F00DCBC84 /* cube.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = cube.cpp; path = src/model/cube.cpp; sourceTree = SOURCE_ROOT; };
+		DCAFD2F4102C6A9F00DCBC84 /* cube.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = cube.h; path = src/model/cube.h; sourceTree = SOURCE_ROOT; };
+		DCAFD2F5102C6A9F00DCBC84 /* md2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = md2.cpp; path = src/model/md2.cpp; sourceTree = SOURCE_ROOT; };
+		DCAFD2F6102C6A9F00DCBC84 /* md2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = md2.h; path = src/model/md2.h; sourceTree = SOURCE_ROOT; };
+		DCAFD2F7102C6A9F00DCBC84 /* modelFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = modelFactory.cpp; path = src/model/modelFactory.cpp; sourceTree = SOURCE_ROOT; };
+		DCAFD2F8102C6A9F00DCBC84 /* modelFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = modelFactory.h; path = src/model/modelFactory.h; sourceTree = SOURCE_ROOT; };
+		DCAFD2F9102C6A9F00DCBC84 /* pyramid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = pyramid.cpp; path = src/model/pyramid.cpp; sourceTree = SOURCE_ROOT; };
+		DCAFD2FA102C6A9F00DCBC84 /* pyramid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pyramid.h; path = src/model/pyramid.h; sourceTree = SOURCE_ROOT; };
+		DCAFD2FC102C6A9F00DCBC84 /* wavefrontLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = wavefrontLoader.cpp; path = src/model/wavefront/wavefrontLoader.cpp; sourceTree = SOURCE_ROOT; };
+		DCAFD2FD102C6A9F00DCBC84 /* wavefrontLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = wavefrontLoader.h; path = src/model/wavefront/wavefrontLoader.h; sourceTree = SOURCE_ROOT; };
+		DCAFD2FE102C6A9F00DCBC84 /* wavefrontModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = wavefrontModel.cpp; path = src/model/wavefront/wavefrontModel.cpp; sourceTree = SOURCE_ROOT; };
+		DCAFD2FF102C6A9F00DCBC84 /* wavefrontModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = wavefrontModel.h; path = src/model/wavefront/wavefrontModel.h; sourceTree = SOURCE_ROOT; };
+		DCAFD301102C6A9F00DCBC84 /* server.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = server.cpp; path = src/server/server.cpp; sourceTree = SOURCE_ROOT; };
+		DCAFD302102C6A9F00DCBC84 /* server.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = server.h; path = src/server/server.h; sourceTree = SOURCE_ROOT; };
+		DCAFD304102C6A9F00DCBC84 /* common.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = common.cpp; path = src/util/common.cpp; sourceTree = SOURCE_ROOT; };
+		DCAFD305102C6A9F00DCBC84 /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = common.h; path = src/util/common.h; sourceTree = SOURCE_ROOT; };
+		DCAFD306102C6A9F00DCBC84 /* commonPacketFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = commonPacketFunctions.h; path = src/util/commonPacketFunctions.h; sourceTree = SOURCE_ROOT; };
+		DCAFD307102C6A9F00DCBC84 /* eventStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = eventStack.h; path = src/util/eventStack.h; sourceTree = SOURCE_ROOT; };
+		DCAFD308102C6A9F00DCBC84 /* fileLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = fileLoader.cpp; path = src/util/fileLoader.cpp; sourceTree = SOURCE_ROOT; };
+		DCAFD309102C6A9F00DCBC84 /* fileLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fileLoader.h; path = src/util/fileLoader.h; sourceTree = SOURCE_ROOT; };
+		DCAFD30A102C6A9F00DCBC84 /* fontRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = fontRenderer.cpp; path = src/util/fontRenderer.cpp; sourceTree = SOURCE_ROOT; };
+		DCAFD30B102C6A9F00DCBC84 /* fontRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fontRenderer.h; path = src/util/fontRenderer.h; sourceTree = SOURCE_ROOT; };
+		DCAFD32B102C6B6F00DCBC84 /* libstdc++.6.0.9.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.6.0.9.dylib"; path = "/usr/lib/libstdc++.6.0.9.dylib"; sourceTree = "<absolute>"; };
+		DCAFD345102C6EBA00DCBC84 /* SDLMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDLMain.h; sourceTree = SOURCE_ROOT; };
+		DCAFD346102C6EBA00DCBC84 /* SDLMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDLMain.m; sourceTree = SOURCE_ROOT; };
+		DCAFD351102C6F8000DCBC84 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = /System/Library/Frameworks/GLUT.framework; sourceTree = "<absolute>"; };
+		DCAFD378102C6FC000DCBC84 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		DCAFD37A102C6FC000DCBC84 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		DCAFD597102C88B300DCBC84 /* libenet.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libenet.dylib; path = "../enet-1.2-mac/build/Release/libenet.dylib"; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		DCAFD2A5102C6A0900DCBC84 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DCAFD3FB102C6FC500DCBC84 /* Cocoa.framework in Frameworks */,
+				DCAFD3FC102C6FC500DCBC84 /* Foundation.framework in Frameworks */,
+				DCAFD32C102C6B6F00DCBC84 /* libstdc++.6.0.9.dylib in Frameworks */,
+				DCAFD2AE102C6A4800DCBC84 /* OpenGL.framework in Frameworks */,
+				DCAFD2B0102C6A4800DCBC84 /* SDL.framework in Frameworks */,
+				DCAFD2B2102C6A4800DCBC84 /* SDL_ttf.framework in Frameworks */,
+				DCAFD36A102C6F9400DCBC84 /* GLUT.framework in Frameworks */,
+				DCAFD599102C88B300DCBC84 /* libenet.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DCAFD2BA102C6A6400DCBC84 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DCAFD32D102C6B7700DCBC84 /* libstdc++.6.0.9.dylib in Frameworks */,
+				DCAFD366102C6F9100DCBC84 /* OpenGL.framework in Frameworks */,
+				DCAFD367102C6F9100DCBC84 /* SDL.framework in Frameworks */,
+				DCAFD368102C6F9100DCBC84 /* SDL_ttf.framework in Frameworks */,
+				DCAFD352102C6F8000DCBC84 /* GLUT.framework in Frameworks */,
+				DCAFD379102C6FC000DCBC84 /* Cocoa.framework in Frameworks */,
+				DCAFD37B102C6FC000DCBC84 /* Foundation.framework in Frameworks */,
+				DCAFD598102C88B300DCBC84 /* libenet.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		DCAFD28A102C698900DCBC84 = {
+			isa = PBXGroup;
+			children = (
+				DCAFD2EB102C6A8A00DCBC84 /* Source */,
+				DCAFD2C0102C6A7F00DCBC84 /* Frameworks */,
+				DCAFD2A8102C6A0900DCBC84 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		DCAFD2A8102C6A0900DCBC84 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DCAFD2A7102C6A0900DCBC84 /* client */,
+				DCAFD2BC102C6A6400DCBC84 /* server */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		DCAFD2C0102C6A7F00DCBC84 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DCAFD597102C88B300DCBC84 /* libenet.dylib */,
+				DCAFD32B102C6B6F00DCBC84 /* libstdc++.6.0.9.dylib */,
+				DCAFD2AD102C6A4800DCBC84 /* OpenGL.framework */,
+				DCAFD2AF102C6A4800DCBC84 /* SDL.framework */,
+				DCAFD2B1102C6A4800DCBC84 /* SDL_ttf.framework */,
+				DCAFD351102C6F8000DCBC84 /* GLUT.framework */,
+				DCAFD378102C6FC000DCBC84 /* Cocoa.framework */,
+				DCAFD37A102C6FC000DCBC84 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DCAFD2EB102C6A8A00DCBC84 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				DCAFD345102C6EBA00DCBC84 /* SDLMain.h */,
+				DCAFD346102C6EBA00DCBC84 /* SDLMain.m */,
+				DCAFD2EE102C6A9F00DCBC84 /* client */,
+				DCAFD2F1102C6A9F00DCBC84 /* model */,
+				DCAFD300102C6A9F00DCBC84 /* server */,
+				DCAFD303102C6A9F00DCBC84 /* util */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		DCAFD2EE102C6A9F00DCBC84 /* client */ = {
+			isa = PBXGroup;
+			children = (
+				DCAFD2EF102C6A9F00DCBC84 /* client.cpp */,
+				DCAFD2F0102C6A9F00DCBC84 /* client.h */,
+			);
+			name = client;
+			path = src/client;
+			sourceTree = "<group>";
+		};
+		DCAFD2F1102C6A9F00DCBC84 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				DCAFD2F2102C6A9F00DCBC84 /* abstractModel.h */,
+				DCAFD2F3102C6A9F00DCBC84 /* cube.cpp */,
+				DCAFD2F4102C6A9F00DCBC84 /* cube.h */,
+				DCAFD2F5102C6A9F00DCBC84 /* md2.cpp */,
+				DCAFD2F6102C6A9F00DCBC84 /* md2.h */,
+				DCAFD2F7102C6A9F00DCBC84 /* modelFactory.cpp */,
+				DCAFD2F8102C6A9F00DCBC84 /* modelFactory.h */,
+				DCAFD2F9102C6A9F00DCBC84 /* pyramid.cpp */,
+				DCAFD2FA102C6A9F00DCBC84 /* pyramid.h */,
+				DCAFD2FB102C6A9F00DCBC84 /* wavefront */,
+			);
+			name = model;
+			path = src/model;
+			sourceTree = "<group>";
+		};
+		DCAFD2FB102C6A9F00DCBC84 /* wavefront */ = {
+			isa = PBXGroup;
+			children = (
+				DCAFD2FC102C6A9F00DCBC84 /* wavefrontLoader.cpp */,
+				DCAFD2FD102C6A9F00DCBC84 /* wavefrontLoader.h */,
+				DCAFD2FE102C6A9F00DCBC84 /* wavefrontModel.cpp */,
+				DCAFD2FF102C6A9F00DCBC84 /* wavefrontModel.h */,
+			);
+			name = wavefront;
+			path = src/model/wavefront;
+			sourceTree = SOURCE_ROOT;
+		};
+		DCAFD300102C6A9F00DCBC84 /* server */ = {
+			isa = PBXGroup;
+			children = (
+				DCAFD301102C6A9F00DCBC84 /* server.cpp */,
+				DCAFD302102C6A9F00DCBC84 /* server.h */,
+			);
+			name = server;
+			path = src/server;
+			sourceTree = "<group>";
+		};
+		DCAFD303102C6A9F00DCBC84 /* util */ = {
+			isa = PBXGroup;
+			children = (
+				DCAFD304102C6A9F00DCBC84 /* common.cpp */,
+				DCAFD305102C6A9F00DCBC84 /* common.h */,
+				DCAFD306102C6A9F00DCBC84 /* commonPacketFunctions.h */,
+				DCAFD307102C6A9F00DCBC84 /* eventStack.h */,
+				DCAFD308102C6A9F00DCBC84 /* fileLoader.cpp */,
+				DCAFD309102C6A9F00DCBC84 /* fileLoader.h */,
+				DCAFD30A102C6A9F00DCBC84 /* fontRenderer.cpp */,
+				DCAFD30B102C6A9F00DCBC84 /* fontRenderer.h */,
+			);
+			name = util;
+			path = src/util;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		DCAFD2A6102C6A0900DCBC84 /* client */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DCAFD2AC102C6A0A00DCBC84 /* Build configuration list for PBXNativeTarget "client" */;
+			buildPhases = (
+				DCAFD2A4102C6A0900DCBC84 /* Sources */,
+				DCAFD2A5102C6A0900DCBC84 /* Frameworks */,
+				DCAFD5E5102C8CCC00DCBC84 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = client;
+			productName = client;
+			productReference = DCAFD2A7102C6A0900DCBC84 /* client */;
+			productType = "com.apple.product-type.tool";
+		};
+		DCAFD2BB102C6A6400DCBC84 /* server */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DCAFD2C1102C6A7F00DCBC84 /* Build configuration list for PBXNativeTarget "server" */;
+			buildPhases = (
+				DCAFD2B9102C6A6400DCBC84 /* Sources */,
+				DCAFD2BA102C6A6400DCBC84 /* Frameworks */,
+				DCAFD609102C8F1800DCBC84 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = server;
+			productName = server;
+			productReference = DCAFD2BC102C6A6400DCBC84 /* server */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		DCAFD28C102C698900DCBC84 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = DCAFD28F102C698900DCBC84 /* Build configuration list for PBXProject "3d-client-server-engine-mac" */;
+			compatibilityVersion = "Xcode 2.4";
+			hasScannedForEncodings = 0;
+			mainGroup = DCAFD28A102C698900DCBC84;
+			productRefGroup = DCAFD2A8102C6A0900DCBC84 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				DCAFD2A6102C6A0900DCBC84 /* client */,
+				DCAFD2BB102C6A6400DCBC84 /* server */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		DCAFD5E5102C8CCC00DCBC84 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/bin/cp $TARGET_BUILD_DIR/client bin/";
+		};
+		DCAFD609102C8F1800DCBC84 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/bin/cp $TARGET_BUILD_DIR/client bin/";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		DCAFD2A4102C6A0900DCBC84 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DCAFD30C102C6A9F00DCBC84 /* client.cpp in Sources */,
+				DCAFD30D102C6A9F00DCBC84 /* cube.cpp in Sources */,
+				DCAFD30F102C6A9F00DCBC84 /* modelFactory.cpp in Sources */,
+				DCAFD310102C6A9F00DCBC84 /* pyramid.cpp in Sources */,
+				DCAFD311102C6A9F00DCBC84 /* wavefrontLoader.cpp in Sources */,
+				DCAFD312102C6A9F00DCBC84 /* wavefrontModel.cpp in Sources */,
+				DCAFD314102C6A9F00DCBC84 /* common.cpp in Sources */,
+				DCAFD315102C6A9F00DCBC84 /* fileLoader.cpp in Sources */,
+				DCAFD316102C6A9F00DCBC84 /* fontRenderer.cpp in Sources */,
+				DCAFD348102C6EBA00DCBC84 /* SDLMain.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DCAFD2B9102C6A6400DCBC84 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DCAFD318102C6A9F00DCBC84 /* cube.cpp in Sources */,
+				DCAFD31A102C6A9F00DCBC84 /* modelFactory.cpp in Sources */,
+				DCAFD31B102C6A9F00DCBC84 /* pyramid.cpp in Sources */,
+				DCAFD31C102C6A9F00DCBC84 /* wavefrontLoader.cpp in Sources */,
+				DCAFD31D102C6A9F00DCBC84 /* wavefrontModel.cpp in Sources */,
+				DCAFD31E102C6A9F00DCBC84 /* server.cpp in Sources */,
+				DCAFD31F102C6A9F00DCBC84 /* common.cpp in Sources */,
+				DCAFD320102C6A9F00DCBC84 /* fileLoader.cpp in Sources */,
+				DCAFD321102C6A9F00DCBC84 /* fontRenderer.cpp in Sources */,
+				DCAFD401102C701500DCBC84 /* SDLMain.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		DCAFD28D102C698900DCBC84 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1 = "x86_64 i386 ppc";
+				COPY_PHASE_STRIP = NO;
+			};
+			name = Debug;
+		};
+		DCAFD28E102C698900DCBC84 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1 = "x86_64 i386 ppc";
+				COPY_PHASE_STRIP = YES;
+			};
+			name = Release;
+		};
+		DCAFD2AA102C6A0A00DCBC84 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1 = "x86_64 i386 ppc";
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../..\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../enet-1.2-mac/build/Release\"";
+				PREBINDING = NO;
+				PRODUCT_NAME = client;
+				VALID_ARCHS = "ppc970 ppc740 ppc64 ppc i386";
+			};
+			name = Debug;
+		};
+		DCAFD2AB102C6A0A00DCBC84 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1 = "x86_64 i386 ppc";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../..\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../enet-1.2-mac/build/Release\"";
+				PREBINDING = NO;
+				PRODUCT_NAME = client;
+				VALID_ARCHS = "i386 x86_64";
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		DCAFD2BE102C6A6500DCBC84 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1 = "x86_64 i386 ppc";
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../..\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../enet-1.2-mac/build/Release\"";
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
+				PREBINDING = NO;
+				PRODUCT_NAME = server;
+				SDKROOT = "";
+				VALID_ARCHS = "ppc970 ppc7400 ppc64 ppc i386";
+			};
+			name = Debug;
+		};
+		DCAFD2BF102C6A6500DCBC84 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1 = "x86_64 i386 ppc";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../..\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../enet-1.2-mac/build/Release\"";
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
+				PREBINDING = NO;
+				PRODUCT_NAME = server;
+				SDKROOT = "";
+				VALID_ARCHS = "ppc970 ppc7400 ppc64 ppc i386";
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		DCAFD28F102C698900DCBC84 /* Build configuration list for PBXProject "3d-client-server-engine-mac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DCAFD28D102C698900DCBC84 /* Debug */,
+				DCAFD28E102C698900DCBC84 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DCAFD2AC102C6A0A00DCBC84 /* Build configuration list for PBXNativeTarget "client" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DCAFD2AA102C6A0A00DCBC84 /* Debug */,
+				DCAFD2AB102C6A0A00DCBC84 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DCAFD2C1102C6A7F00DCBC84 /* Build configuration list for PBXNativeTarget "server" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DCAFD2BE102C6A6500DCBC84 /* Debug */,
+				DCAFD2BF102C6A6500DCBC84 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = DCAFD28C102C698900DCBC84 /* Project object */;
+}
